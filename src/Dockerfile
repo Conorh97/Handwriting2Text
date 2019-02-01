@@ -1,4 +1,4 @@
-FROM ubuntu:16.04
+FROM tensorflow/tensorflow
 MAINTAINER Conor Hanlon "conor.hanlon5@mail.dcu.ie"
 
 RUN apt-get update
@@ -8,6 +8,10 @@ RUN apt-get install -y python3-pip python3-dev \
   && cd /usr/local/bin \
   && ln -s /usr/bin/python3 python \
   && pip3 install --upgrade pip
+
+RUN pip install --upgrade google-api-python-client
+
+RUN pip install --upgrade oauth2client
 
 ENV NODE_VERSION 6.11.5
 
@@ -24,9 +28,7 @@ RUN set -ex \
     B9AE9905FFD7803F25714661B63B535A4C206CA9 \
     56730D5401028683275BD23C23EFEFE93C4CFFFE \
   ; do \
-    gpg --keyserver pgp.mit.edu --recv-keys "$key" || \
-    gpg --keyserver keyserver.pgp.com --recv-keys "$key" || \
-    gpg --keyserver ha.pool.sks-keyservers.net --recv-keys "$key" ; \
+    gpg --keyserver pool.sks-keyservers.net --recv-keys "$key" ; \
   done
 
 RUN ARCH= && dpkgArch="$(dpkg --print-architecture)" \
@@ -54,7 +56,7 @@ ADD backend/ /opt/backend
 WORKDIR /opt/frontend
 RUN npm install -fg ember-cli
 RUN npm install -f
-RUN ember build --environment=production --output-path ../backend/static/
+RUN ember build --environment=development --output-path ../backend/static/
 
 WORKDIR /opt/backend
 RUN pip install -r req.txt

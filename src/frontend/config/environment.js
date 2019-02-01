@@ -6,6 +6,8 @@ module.exports = function(environment) {
     environment,
     rootURL: '/',
     locationType: 'auto',
+    apiHost: 'http://localhost:4200',
+    googleClientID: '740582772473-nqoah085s7pidddh9tfjjkbo4go3r1u7.apps.googleusercontent.com',
     EmberENV: {
       FEATURES: {
         // Here you can enable experimental features on an ember canary build
