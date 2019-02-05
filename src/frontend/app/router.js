@@ -8,7 +8,7 @@ const Router = EmberRouter.extend({
 
 Router.map(function() {
   this.route('login');
-  this.route('protected');
+  this.route('home');
   this.route('callback');
 });
 

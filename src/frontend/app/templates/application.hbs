@@ -1,10 +1,11 @@
 <div class="menu">
   {{#if session.isAuthenticated}}
-    <button onclick={{action 'invalidateSession'}}>
-      {{#link-to 'login'}}Logout{{/link-to}}
-    </button>
+    <h1>{{user.email}}</h1>
+    <a {{action "invalidateSession"}}>
+      {{#link-to "login"}}Logout{{/link-to}}
+    </a>
   {{else}}
-    {{#link-to 'login'}}Login{{/link-to}}
+    {{#link-to "login"}}Login{{/link-to}}
   {{/if}}
 </div>
 <div class="main">

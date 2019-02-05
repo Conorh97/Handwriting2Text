@@ -5,7 +5,7 @@ import OAuth2ImplicitGrantCallbackRouteMixin from 'ember-simple-auth/mixins/oaut
 
 export default Route.extend(OAuth2ImplicitGrantCallbackRouteMixin, {
   ajax: inject(),
-  user: inject('user-service'),
+  cookies: inject(),
   authenticator: 'authenticator:oauth2-implicit-grant',
   afterModel: function () {
     let responseUrl = this.get('router.url');
@@ -15,14 +15,28 @@ export default Route.extend(OAuth2ImplicitGrantCallbackRouteMixin, {
       method: 'GET',
       async: false,
       success: (userInfo) => {
-        this.user.setUser(userInfo, access_token);
+        this.createCookie(userInfo, access_token);
         later(() => {
-          this.transitionTo('protected');
+          this.transitionTo('home');
         }, 1000);
       },
       error: (e) => {
         console.log(e);
       }
     });
+  },
+  createCookie: function(user, accessToken) {
+    let forename = user.name.givenName;
+    let surname = user.name.familyName;
+    let email = user.emails[0].value;
+    let id = user.id;
+    let imageUrl = user.image.url;
+    let token = accessToken;
+
+    let cookieContent = forename + "," + surname + "," + email
+                        + "," + id  + "," + imageUrl  + "," + token;
+
+    let cookieService = this.get('cookies');
+    cookieService.write('currentUser', cookieContent);
   }
 });
