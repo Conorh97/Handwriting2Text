@@ -1,13 +1,8 @@
-<div class="menu">
-  {{#if session.isAuthenticated}}
-    <h1>{{user.email}}</h1>
-    <a {{action "invalidateSession"}}>
-      {{#link-to "login"}}Logout{{/link-to}}
-    </a>
-  {{else}}
-    {{#link-to "login"}}Login{{/link-to}}
-  {{/if}}
-</div>
-<div class="main">
-  {{outlet}}
-</div>
+<section>
+  <div id="header">
+    {{#page-header session=session user=user}}{{/page-header}}
+  </div>
+  <div id="main">
+    {{outlet}}
+  </div>
+</section>

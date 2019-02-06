@@ -1,0 +1,20 @@
+<div class="flex-container">
+  <div class="flex-middle">
+    <img alt="Logo" src="/assets/images/logo.png">
+  </div>
+  <div id="user-information">
+    {{#if session.isAuthenticated}}
+      <h3>{{user.forename}}</h3>
+      <img id="profile-picture" alt="User Profile Picture" src={{user.imageUrl}}>
+      <button id="sign-out-btn" class="btn btn-outline-primary" onclick={{action "invalidateSession"}}>
+        <i class="fa fa-google"></i>
+        <span class="button-text">Logout</span>
+      </button>
+    {{else}}
+      <button id="sign-in-btn" class="btn btn-outline-success" onclick={{action "authenticate"}}>
+        <i class="fa fa-google"></i>
+        <span class="button-text">Login with Google</span>
+      </button>
+    {{/if}}
+  </div>
+</div>

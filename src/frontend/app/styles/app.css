@@ -1,0 +1,83 @@
+body {
+  height: 100%;
+  width: 100%;
+  margin: 0;
+  font-family: "Times New Roman", Times, serif;
+}
+
+section {
+  height: 850px;
+  display: flex;
+  flex-flow: column;
+}
+
+.flex-container {
+  height: 130px;
+  width: 100%;
+  background-color: white;
+  display: flex;
+}
+
+.flex-middle {
+  flex: 6;
+}
+
+.flex-middle img {
+  height: 130px;
+  width: 300px;
+  margin: auto;
+  display: block;
+  position: relative;
+}
+
+#user-information {
+  width: 200px;
+  margin-right: 120px;
+  display: flex;
+  float: right;
+  right: 0;
+  position: absolute;
+  flex: 1;
+}
+
+#user-information h3 {
+  padding: 50px 10px 0px 10px;
+}
+
+#profile-picture {
+  height: 50px;
+  width: 50px;
+  margin: 40px 10px 0px 10px;
+  border-radius: 50%;
+}
+
+#sign-out-btn {
+  height: 50px;
+  margin: 40px 0px 0px 10px;
+}
+
+#sign-in-btn {
+  height: 50px;
+  margin: 40px 0px 0px 75px;
+}
+
+.fa-google {
+  color: #4285f4;
+}
+
+.button-text {
+  display: inline-block;
+  vertical-align: middle;
+  padding: 0px 15px 0px 15px;
+  font-size: 14px;
+  font-weight: bold;
+  font-family: 'Roboto', sans-serif;
+
+}
+
+#main {
+  height:100%;
+  background: linear-gradient(to top right, #1a53ff, #b3c6ff);
+  flex: 2;
+  overflow: auto;
+}

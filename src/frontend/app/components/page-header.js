@@ -1,10 +1,19 @@
-import Controller from '@ember/controller';
+import Component from '@ember/component';
 import { inject as service } from '@ember/service';
 import config from '../config/environment';
 
-export default Controller.extend({
-  session: service('session'),
+export default Component.extend({
+  router: service(),
+  session: service(),
+  cookies: service(),
   actions: {
+    invalidateSession() {
+      let cookieService = this.get('cookies');
+      cookieService.clear('user');
+
+      this.get('session').invalidate();
+      this.get('router').transitionTo('login');
+    },
     authenticate() {
       let clientId = config.googleClientID;
       let redirectURI = `http://localhost:4200/callback`;
