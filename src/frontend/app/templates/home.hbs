@@ -1,1 +1,21 @@
-<h1>Logged In</h1>
+{{#if this.showUpload}}
+  {{#upload-modal hideUpload=(action "hideUpload")}}{{/upload-modal}}
+{{else if this.showInstructions}}
+  <h1>Instructions Modal</h1>
+{{/if}}
+<div class="content-card">
+  <h1>Upload Image(s)</h1>
+  <a {{action "displayUpload"}}>
+    <div class="card-icon">
+      <i class="fa fa-upload"></i>
+    </div>
+  </a>
+</div>
+<div class="content-card">
+  <h1>Instructions</h1>
+  <a {{action "displayInstructions"}}>
+    <div class="card-icon">
+      <i class="fa fa-question"></i>
+    </div>
+  </a>
+</div>

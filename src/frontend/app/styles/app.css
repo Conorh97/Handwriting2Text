@@ -8,7 +8,7 @@ body {
 }
 
 section {
-  height: 850px;
+  height: 755px;
   display: flex;
   flex-flow: column;
 }
@@ -80,6 +80,106 @@ section {
 #main {
   height:100%;
   background: linear-gradient(to top right, #1a53ff, #b3c6ff);
+  display: flex;
   flex: 2;
   overflow: auto;
 }
+
+.content-card {
+  margin: 60px 25px 0px 25px;
+  flex: 1;
+  text-align: center;
+}
+
+.content-card h1 {
+  color: white;
+  -webkit-text-stroke-width: 0.5px;
+  -webkit-text-stroke-color: black;
+  padding-bottom: 20px;
+}
+
+.card-icon {
+  height: 250px;
+  width: 250px;
+  margin: 0 auto;
+  background-color: white;
+  border-radius: 50%;
+}
+
+.card-icon:hover {
+  cursor: pointer;
+}
+
+.card-icon i {
+  padding-top: 40px;
+  color: #1a53ff;
+  font-size: 150px;
+}
+
+#upload-box {
+  background-color: white;
+  border: 10px solid dimgray;
+  border-radius: 10px;
+  height: 400px;
+  width: 750px;
+  margin: auto;
+  z-index: 10;
+  position: absolute;
+  top: 7%;
+  left: 0;
+  bottom: 0;
+  right: 0;
+}
+
+#upload-box button {
+  display: flex;
+  justify-content: center;
+  margin-top: 30px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.close-button {
+  float: right;
+  background-color: white;
+  color: dimgray;
+  font-size: 30px;
+  padding: 10px;
+}
+
+.drop-box {
+  height: 250px;
+  width: 600px;
+  margin-top: 20px;
+  margin-left: auto;
+  margin-right: auto;
+  box-sizing: border-box;
+  border: 5px dashed #0059b3;
+  text-align: center;
+  justify-content: center;
+  color: dimgray;
+  font-size: 80px;
+  background-color: #89cefb;
+}
+
+.drop-box i {
+  padding-top: 40px;
+}
+
+.drop-box:hover {
+  border: 5px dashed #003366;
+  background-color: #5e97bb;
+}
+
+.imageInput {
+  opacity: 0.0;
+  position: absolute;
+  overflow: hidden;
+  display: inline-block;
+  left: 50%;
+  height: 250px;
+  width: 300px;
+  padding-left: 300px
+}
+
+
