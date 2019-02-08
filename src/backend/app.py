@@ -1,8 +1,7 @@
 from flask import Flask, request, Response
 from flask_cors import CORS, cross_origin
 from werkzeug import secure_filename
-import json
-import cv2
+from image import process_image
 import os
 
 DOWNLOAD_DIRECTORY = '{}/tmp-images'.format(os.getcwd())
@@ -17,6 +16,7 @@ def upload():
             file = request.files['image[{}]'.format(i)]
             filename = secure_filename(file.filename)
             file.save('{}/{}'.format(DOWNLOAD_DIRECTORY, filename))
+            process_image(filename)
         return Response({'val': 'Image(s) Uploaded'}, status=201, mimetype='application/json')
     else:
         return Response({'val': 'Error in uploading'}, status=500, mimetype='application/json')
