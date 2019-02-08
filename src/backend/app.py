@@ -1,4 +1,4 @@
-from flask import Flask, request
+from flask import Flask, request, Response
 from flask_cors import CORS, cross_origin
 from werkzeug import secure_filename
 import json
@@ -13,18 +13,13 @@ app = Flask(__name__, static_url_path='')
 @cross_origin()
 def upload():
     if request.form is not None:
-        print(request)
-        print(request.files['image[0]'])
-        print(len(request.files))
         for i in range(len(request.files)):
             file = request.files['image[{}]'.format(i)]
             filename = secure_filename(file.filename)
-            #cv2.imwrite(filename, request.files['image[{}]'.format(i)])
             file.save('{}/{}'.format(DOWNLOAD_DIRECTORY, filename))
-
-        return json.dumps({'status': 'OK', 'val': 'Tested'})
+        return Response({'val': 'Image(s) Uploaded'}, status=201, mimetype='application/json')
     else:
-        return json.dumps({'status': 'false', 'val': 'Not Tested'})
+        return Response({'val': 'Error in uploading'}, status=500, mimetype='application/json')
 
 
 if __name__ == "__main__":
