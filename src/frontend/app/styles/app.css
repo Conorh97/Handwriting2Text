@@ -182,4 +182,28 @@ section {
   margin-left: -300px;
 }
 
+#results-content {
+  display: flex;
+}
+
+.results-area {
+  margin: 25px;
+  flex: 2;
+}
+
+textarea {
+  height: 250px;
+  width: 200px;
+  overflow-y: scroll;
+  resize: none;
+}
+
+#save-box {
+  margin: 25px;
+  flex: 1
+}
+
+.filename {
+  width: 240px;
+}
 

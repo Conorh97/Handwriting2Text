@@ -1,7 +1,7 @@
 <div id="upload-box">
   <i class="fa fa-times close-button" aria-hidden="true" onclick={{this.hideUpload}}></i>
   <div class="drop-box">
-    <input class="imageInput" type="file" value=image accept="image/png,image/jpeg,application/pdf" onchange={{action "addImages"}} name="attachment"/>
+    <input class="imageInput" type="file" value=image accept="image/png,image/jpeg,application/pdf" onchange={{action "addImages"}} name="attachment">
     <i class="fa fa-upload"></i>
     {{#if hasImages}}
       <h4>{{imageCount}} image(s) added.</h4>
@@ -10,7 +10,7 @@
     {{/if}}
   </div>
   {{#if hasImages}}
-    <button type="button" class="btn btn-primary" onClick={{action 'uploadImages'}}>Convert</button>
+    <button type="button" class="btn btn-primary" onClick={{action "uploadImages"}}>Convert</button>
   {{else}}
     <button class="btn btn-danger">No Images Uploaded</button>
   {{/if}}

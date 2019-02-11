@@ -1,5 +1,7 @@
 {{#if this.showUpload}}
-  {{#upload-modal hideUpload=(action "hideUpload")}}{{/upload-modal}}
+  {{#upload-modal hideUpload=(action "hideUpload") displayResult=(action "displayResult")}}{{/upload-modal}}
+{{else if this.showResult}}
+  {{#results-modal hideResult=(action "hideResult") result=result}}{{/results-modal}}
 {{else if this.showInstructions}}
   <h1>Instructions Modal</h1>
 {{/if}}

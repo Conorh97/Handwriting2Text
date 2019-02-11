@@ -1,0 +1,23 @@
+<div id="upload-box">
+  <i class="fa fa-times close-button" aria-hidden="true" onclick={{this.hideResult}}></i>
+  <div id="results-content">
+    <div class="form-group results-area">
+      <label>Converted Text:</label>
+      <textarea class="form-control" rows="5">{{this.result}}</textarea>
+    </div>
+    <div id="save-box">
+      <div class="form-group filename">
+        <label>Filename:</label>
+        <input class="form-control">
+      </div>
+      <button id="sign-in-btn" class="btn btn-success">
+        <i class="fa fa-google"></i>
+        <span class="button-text">Save to Google Drive</span>
+      </button>
+      <button id="sign-in-btn" class="btn btn-primary">
+        <i class="fa fa-download"></i>
+        <span class="button-text">Download File Locally</span>
+      </button>
+    </div>
+  </div>
+</div>

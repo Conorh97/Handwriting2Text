@@ -1,8 +1,9 @@
-from flask import Flask, request, Response
+from flask import Flask, request
 from flask_cors import CORS, cross_origin
 from werkzeug import secure_filename
 from image import process_image
 import os
+import json
 
 DOWNLOAD_DIRECTORY = '{}/tmp-images'.format(os.getcwd())
 app = Flask(__name__, static_url_path='')
@@ -17,9 +18,9 @@ def upload():
             filename = secure_filename(file.filename)
             file.save('{}/{}'.format(DOWNLOAD_DIRECTORY, filename))
             process_image(filename)
-        return Response({'val': 'Image(s) Uploaded'}, status=201, mimetype='application/json')
+        return json.dumps({'status': '201', 'val': 'This is some template result text to fill the textarea.'})
     else:
-        return Response({'val': 'Error in uploading'}, status=500, mimetype='application/json')
+        return json.dumps({'status': '500', 'val': 'Error'})
 
 
 if __name__ == "__main__":
