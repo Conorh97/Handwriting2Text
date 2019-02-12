@@ -1,72 +1,43 @@
-# Blog: MY-PROJECT-TITLE
+# Blog: Handwriting to Text Converter
 
-**MY-NAME**
+**Conor Hanlon**
 
-## My First Blog Entry
+## Blog 1: My Idea
 
-This is my first blog entry.
+#### 18/10/18
 
-The blog is written in [markdown](https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet).
-Markdown is a simple text-based mark-up language.
+Following a lengthy thought process and many different notions, I have finally settled on an idea for my final year project. I am going to design a web application aimed at college students. The app will let them upload images of their handwritten notes, and will generate a text document with the converted content. They will then have the options to save the document to their Google Drive or to download the file locally.
 
-## My Second Blog Entry
+This project would be a useful platform for many students who have to write a lot of essays for as a part of their course. Also, it will help me learn a lot about new technologies such as neural networks through Tensorflow and image processing through OpenCV. Mr Ray Walshe has agreed to be my supervisor. The next step is to finish off my project proposal and present it to the panel.
 
-This week, I learned how to include
-[images](https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet#images)
-in my blog.
+## Blog 2: The Project Proposal
 
-![cat](https://gitlab.computing.dcu.ie/sblott/2018-ca400-XXXX/raw/master/docs/blog/images/cat.jpg)
+#### 24/10/18
 
-Here are the instructions:
+Yesterday, I presented my idea to Charles Daly and Tomás Ward. My project was approved, which is a great first milestone to get on the board. They both agreed that while it would be an impressive application to implement, there is a significant risk involved with the training of the neural network. The main point of information I took away from the meeting is that I should ensure I have a contingency plan in place in the event of the trained model not being accurate.
 
-- Add the image to your repo (probably using the `images` sub-directory here).
-  The cat example above is in `./images/cat.jpg`.
+This morning I met with Ray to discuss how the meeting went. After discussing my project with the lecturers, he kindly linked me to the Microsoft Azure API. They provide a cognitive service which carries out handwriting to text conversion. This will serve as my backup for the neural netowrk, to ensure I have an application to demo come May.
 
-- Commit that and push it to your repo.
+## Blog 3: Functional Specification
 
-- On Gitlab, navigate to your new image and click *Raw*.  You get the raw URL of your image.  Copy that URL.
+#### 23/11/18
 
-- Add your image to this document using the following format:
+I just completed my first draft of the fuctional specification. It took quite a lot of time to finish, but I am confident that my attention to detail in the early planning stages of the project will benefit me later in the year. I settled on EmberJS as my frontend framework and Flask as my REST API. Other technologies include OpenCV, Tensorflow, Docker, Bootstrap and various Google APIs.
 
-    <pre>![alternative text](URL)</pre>
+## Blog 4: Last Meeting before Christmas
 
-See the example [here](https://gitlab.computing.dcu.ie/sblott/2018-ca400-XXXX/raw/master/docs/blog/blog.md).
+#### 27/11/18
 
-You can also mention other users (like me: @sblott).
+This morning I met with Ray for the last time before the Christmas break. We discussed my progress so far and his expectations of me going into next semester. He acknowledged that a lot of my time will be spent studying for exams, but advised me to flesh out my web application as soon as possible. He suggesed that I investigate further into the neural network model, to ensure I hit the ground running next year. I hope to have my basic frontend and Google login implmented before we meet again.
 
-## Including Code
+## Blog 5: Google Authentication
 
-Raw text:
-```
-Mary had a little lamb,
-it's fleece was white as snow.
-```
+#### 01/02/18
 
-Syntax highlighting is also possible; for example...
+My main focus this week has been setting up the Google login functionality for the EmberJS application. Due to the fact that I am not storing any user information in a server-side database, the login will use a single sign-on and store any user information for the session in a cookie. I used the EmberJS module `ember-simple-auth` to help with the routing. The user is initially redirected to the `login` route if they have not signed in. After the user has been successfully authenticated, they are redirected to the `home` page. EmberJS is very useful for building single-page applications like mine, and my next focus will be developing the different components for uploading images.
 
-Python:
-```python
-i = 0
-while i < len(s):
-   # So something.
-   i = i + 1
-```
+## Blog 6: First Meeting of Semester 2
 
-Java:
-```java
-for (i=0; i<s.length(); i+=1) {
-   // Do something.
-}
-```
+#### 08/02/18
 
-Coffeescript:
-```coffeescript
-i = 0
-while i < s.length
-   # So something.
-   i = i + 1
-```
-
-## Instructions
-
-Once you've understood this sample, replace it with your own blog.
+I'm just back from my meeting with Ray. I showed him my current user interface and Google login functionality, as well as successful POSTing of uploaded images to my Flask API. I explained that my main aim is to have the bulk of the image processing functionality completed by the end of next week, so that I can focus on iplmenting the neural network. He is slightly concerned that I should be more conscious of time, because there will be a lot of trial and error involved in the training of the model. However, he thinks that if I can stick to the timelines laid out for myself and hit the milestones I am aiming for, I should be well on track to develop a well rounded application. The coming few weeks will be very demanding, but all the hours I put in will pay off in the end. 
