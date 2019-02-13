@@ -4,7 +4,7 @@ body {
   height: 100%;
   width: 100%;
   margin: 0;
-  font-family: "Times New Roman", Times, serif;
+  font-family: Arial, Helvetica, sans-serif;
 }
 
 section {
@@ -93,8 +93,9 @@ section {
 
 .content-card h1 {
   color: white;
-  -webkit-text-stroke-width: 0.5px;
+  -webkit-text-stroke-width: 1px;
   -webkit-text-stroke-color: black;
+  font-weight: bold;
   padding-bottom: 20px;
 }
 
