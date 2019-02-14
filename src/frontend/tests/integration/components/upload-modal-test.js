@@ -12,15 +12,6 @@ module('Integration | Component | upload-modal', function(hooks) {
 
     await render(hbs`{{upload-modal}}`);
 
-    assert.equal(this.element.textContent.trim(), '');
-
-    // Template block usage:
-    await render(hbs`
-      {{#upload-modal}}
-        template block text
-      {{/upload-modal}}
-    `);
-
-    assert.equal(this.element.textContent.trim(), 'template block text');
+    assert.equal($('h4').text().trim(), 'Upload');
   });
 });

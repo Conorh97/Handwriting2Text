@@ -12,15 +12,6 @@ module('Integration | Component | results-modal', function(hooks) {
 
     await render(hbs`{{results-modal}}`);
 
-    assert.equal(this.element.textContent.trim(), '');
-
-    // Template block usage:
-    await render(hbs`
-      {{#results-modal}}
-        template block text
-      {{/results-modal}}
-    `);
-
-    assert.equal(this.element.textContent.trim(), 'template block text');
+    assert.equal($('.results-area label').text().trim(), 'Converted Text:');
   });
 });

@@ -12,15 +12,6 @@ module('Integration | Component | page-header', function(hooks) {
 
     await render(hbs`{{page-header}}`);
 
-    assert.equal(this.element.textContent.trim(), '');
-
-    // Template block usage:
-    await render(hbs`
-      {{#page-header}}
-        template block text
-      {{/page-header}}
-    `);
-
-    assert.equal(this.element.textContent.trim(), 'template block text');
+    assert.equal(this.element.textContent.trim(), 'Login with Google');
   });
 });
