@@ -1,4 +1,4 @@
-image: node:6.0.0
+image: node:11.9.0
 
 before_script:
    - echo "deb http://dl.google.com/linux/chrome/deb/ stable main" | tee -a /etc/apt/sources.list
