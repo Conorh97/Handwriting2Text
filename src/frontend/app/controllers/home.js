@@ -17,6 +17,7 @@ export default Controller.extend({
       this.set('showResult', true);
     },
     hideResult: function() {
+      this.set('result', null);
       this.set('showResult', false);
     },
     displayInstructions: function() {
