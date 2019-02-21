@@ -2,3 +2,4 @@
 */venv/
 backend/config.cfg
 backend/tmp-images
+model/data/
