@@ -48,9 +48,9 @@ I'm just back from my meeting with Ray. I showed him my current user interface a
 
 Over the last few days, I've been focusing on the image processing functionality of my Flask API. This is a core feature of my project, as it is central to the user application. I've been reading the OpenCV docs, a library providing computer vision tools, to gain a full understanding of how I should implement this component. One of the main issues I found was dealing with shadows in images. Below is an example of how my system was initially trying to process the images:
 
-*Original*              | *Shadow*
-:----------------------:|:---------------------:
-![](images/before.jpeg) |![](images/shadow.jpeg)
+*Shadow*
+
+![](images/shadow.jpeg)
 
 To solve this issue, I had to dilate the different planes in the image. I then merged the results, which successfully removes the shadow. Here is an example:
 
@@ -61,3 +61,7 @@ To solve this issue, I had to dilate the different planes in the image. I then m
 ## Blog 8: Test Driven Development
 
 #### 14/02/18
+
+A large component of any software application is testing the system to ensure it is robust as possible. It is important to ensure the code is designed to pass all test cases continually throughout the development lifecycle.
+
+Today I configured my Gitlab Continuous Integration pipeline. This pipeline runs every time I push changes to my online repository. Currently, it runs all EmberJS unit tests to ensure that all test cases pass with the new changes in place. I plan to add Flask unit tests, as well as integration and acceptance tests between all the different components of my application. This will help ensure that my application is of the highest standard for my final presentation in May.
