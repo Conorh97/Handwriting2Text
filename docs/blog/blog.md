@@ -40,4 +40,24 @@ My main focus this week has been setting up the Google login functionality for t
 
 #### 08/02/18
 
-I'm just back from my meeting with Ray. I showed him my current user interface and Google login functionality, as well as successful POSTing of uploaded images to my Flask API. I explained that my main aim is to have the bulk of the image processing functionality completed by the end of next week, so that I can focus on iplmenting the neural network. He is slightly concerned that I should be more conscious of time, because there will be a lot of trial and error involved in the training of the model. However, he thinks that if I can stick to the timelines laid out for myself and hit the milestones I am aiming for, I should be well on track to develop a well rounded application. The coming few weeks will be very demanding, but all the hours I put in will pay off in the end. 
+I'm just back from my meeting with Ray. I showed him my current user interface and Google login functionality, as well as successful POSTing of uploaded images to my Flask API. I explained that my main aim is to have the bulk of the image processing functionality completed by the end of next week, so that I can focus on iplmenting the neural network. He is slightly concerned that I should be more conscious of time, because there will be a lot of trial and error involved in the training of the model. However, he thinks that if I can stick to the timelines laid out for myself and hit the milestones I am aiming for, I should be well on track to develop a well rounded application. The coming few weeks will be very demanding, but all the hours I put in will pay off in the end.
+
+## Blog 7: Tackling Image Processing
+
+#### 12/02/18
+
+Over the last few days, I've been focusing on the image processing functionality of my Flask API. This is a core feature of my project, as it is central to the user application. I've been reading the OpenCV docs, a library providing computer vision tools, to gain a full understanding of how I should implement this component. One of the main issues I found was dealing with shadows in images. Below is an example of how my system was initially trying to process the images:
+
+*Original*              | *Shadow*
+:----------------------:|:---------------------:
+![](images/before.jpeg) |![](images/shadow.jpeg)
+
+To solve this issue, I had to dilate the different planes in the image. I then merged the results, which successfully removes the shadow. Here is an example:
+
+*After*
+
+![](images/after.jpg)
+
+## Blog 8: Test Driven Development
+
+#### 14/02/18
