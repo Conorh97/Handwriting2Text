@@ -21,6 +21,7 @@ class Batch(object):
 class Loader(object):
 
     def __init__(self, file_path, batch_size, image_size, max_length):
+        self.augment = False
         self.current_index = 0
         self.batch_size = batch_size
         self.image_size = image_size
@@ -48,8 +49,8 @@ class Loader(object):
 
         split_index = int(0.95 * len(self.samples))
 
-        self.training_set = [sample.text for sample in self.samples[:split_index]]
-        self.testing_set = [sample.text for sample in self.samples[split_index:]]
+        self.training_set = self.samples[:split_index]
+        self.testing_set = self.samples[split_index:]
 
         self.samples_per_epoch = 25000
         self.randomise_training_set()
@@ -69,13 +70,20 @@ class Loader(object):
         return text
 
     def randomise_training_set(self):
+        self.augment = True
         self.current_index = 0
         random.shuffle(self.training_set)
         self.samples = self.training_set[:self.samples_per_epoch]
 
     def set_validation_set(self):
+        self.augment = False
         self.current_index = 0
         self.samples = self.testing_set
+
+    def get_batch_info(self):
+        batch_number = self.current_index // self.batch_size + 1
+        overall_batches = len(self.samples) // self.batch_size
+        return (batch_number, overall_batches)
 
     def has_next(self):
         return self.current_index + self.batch_size <= len(self.samples)
@@ -85,15 +93,22 @@ class Loader(object):
         gt_texts = [self.samples[i].text for i in batch_range]
         images = []
         for i in batch_range:
-            preprocessed_image = self.preprocess(self.samples[i].filePath)
+            preprocessed_image = self.preprocess(self.samples[i].file_path)
             images.append(preprocessed_image)
         self.current_index += self.batch_size
         return Batch(gt_texts, images)
 
     def preprocess(self, file_path):
         image = cv2.imread(file_path, cv2.IMREAD_GRAYSCALE)
+
         width = self.image_size[0]
         height = self.image_size[1]
 
+        if self.augment:
+            stretch = (random.random() - 0.5)
+            stretched_width = max(int(width * (1 + stretch)), 1)
+            image = cv2.resize(image, (stretched_width, height))
+
         processed = cv2.resize(image, (width, height))
+        processed = cv2.transpose(processed)
         return processed

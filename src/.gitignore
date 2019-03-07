@@ -4,5 +4,10 @@ backend/config.cfg
 backend/credentials.json
 backend/quickstart.py
 backend/tmp-images
+backend/__pycache__
 model/data/
-*/__pycache__
+model/logs/
+model/snapshot/
+model/ModelTensor.py
+model/CTCWordBeamSearch/
+model/__pycache__
