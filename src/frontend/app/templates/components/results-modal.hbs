@@ -10,7 +10,7 @@
         <label>Filename:</label>
         {{input class="form-control" value=filename type="text"}}
       </div>
-      <button id="sign-in-btn" class="btn btn-success">
+      <button id="sign-in-btn" class="btn btn-success" onClick={{action "createGoogleDoc"}}>
         <i class="fa fa-google"></i>
         <span class="button-text">Save to Google Drive</span>
       </button>

@@ -11,12 +11,13 @@ export default Route.extend(OAuth2ImplicitGrantCallbackRouteMixin, {
     let responseUrl = this.get('router.url');
     let access_token = responseUrl.split('&')[0].split('=')[1];
     let queryUrl = `https://www.googleapis.com/plus/v1/people/me?access_token=${access_token}`;
-
+    console.log(responseUrl);
     this.get('ajax').request(queryUrl, {
       method: 'GET',
       async: false,
       success: (userInfo) => {
         this.createCookie(userInfo, access_token);
+        console.log(userInfo);
         later(() => {
           this.transitionTo('home');
         }, 1000);

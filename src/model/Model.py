@@ -86,7 +86,7 @@ class Model:
         self.rnn = tf.squeeze(tf.slice(self.cnn, [0, 0, 0, 0], [self.batch_size, 100, 1, 512]), axis=[2])
 
         hidden_cells = 512
-        cells = [tf.contrib.rnn.LSTMCell(num_units=hidden_cells, state_is_tuple=True) for i in range(2)]
+        cells = [tf.contrib.rnn.LSTMCell(num_units=hidden_cells, state_is_tuple=True)] * 2
         stacked = tf.contrib.rnn.MultiRNNCell(cells, state_is_tuple=True)
 
         bidirectional = tf.nn.bidirectional_dynamic_rnn(cell_fw=stacked, cell_bw=stacked,

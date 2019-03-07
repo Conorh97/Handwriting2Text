@@ -28,14 +28,16 @@ def process_image(filename):
     pts = cv2.findNonZero(threshed)
     rectangle = cv2.minAreaRect(pts)
 
+    print(rectangle)
     (cx, cy) = rectangle[0]
     (width, height) = rectangle[1]
     angle = rectangle[2]
 
-    if width > height:
-        angle += 90
-    elif angle < 0:
-        angle = 0
+    #if width > height:
+    #    angle += 90
+    #elif angle < 0:
+
+    angle = 0
 
     matrix = cv2.getRotationMatrix2D((cx, cy), angle, 1.0)
     rotated = cv2.warpAffine(threshed, matrix, (image.shape[1], image.shape[0]))

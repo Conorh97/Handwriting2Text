@@ -3,6 +3,7 @@ import { inject as service } from '@ember/service';
 import config from '../config/environment';
 
 export default Component.extend({
+  ajax: service(),
   router: service(),
   session: service(),
   cookies: service(),
@@ -18,13 +19,13 @@ export default Component.extend({
       let clientId = config.googleClientID;
       let redirectURI = `http://localhost:4200/callback`;
       let responseType = `token`;
-      let scope = `email`;
-      window.location.replace(`https://accounts.google.com/o/oauth2/v2/auth?`
+      let scope = `email https://www.googleapis.com/auth/documents`;
+      let queryUrl = `https://accounts.google.com/o/oauth2/v2/auth?`
         + `client_id=${clientId}`
         + `&redirect_uri=${redirectURI}`
         + `&response_type=${responseType}`
-        + `&scope=${scope}`
-      );
+        + `&scope=${scope}`;
+      window.location.replace(queryUrl);
     }
   }
 });
