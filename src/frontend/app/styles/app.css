@@ -85,6 +85,39 @@ section {
   overflow: auto;
 }
 
+#welcome-card {
+  height: 500px;
+  width: 650px;
+  border-radius: 25px;
+  text-align: center;
+  margin-top: 50px;
+  margin-left: auto;
+  margin-right: auto;
+  padding: 20px;
+  background-color: white;
+}
+
+#welcome-card h1 {
+  font-size: 24px;
+  font-weight: bold;
+}
+
+#welcome-card ul {
+  font-size: 18px;
+  list-style-type: circle;
+  text-align: left;
+}
+
+#welcome-card li {
+  padding: 10px;
+}
+
+#welcome-card img {
+  width: 100px;
+  height: 100px;
+  display: inline;
+}
+
 .content-card {
   margin: 60px 25px 0px 25px;
   flex: 1;
