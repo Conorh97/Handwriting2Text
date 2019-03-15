@@ -32,19 +32,19 @@ This morning I met with Ray for the last time before the Christmas break. We dis
 
 ## Blog 5: Google Authentication
 
-#### 01/02/18
+#### 01/02/19
 
 My main focus this week has been setting up the Google login functionality for the EmberJS application. Due to the fact that I am not storing any user information in a server-side database, the login will use a single sign-on and store any user information for the session in a cookie. I used the EmberJS module `ember-simple-auth` to help with the routing. The user is initially redirected to the `login` route if they have not signed in. After the user has been successfully authenticated, they are redirected to the `home` page. EmberJS is very useful for building single-page applications like mine, and my next focus will be developing the different components for uploading images.
 
 ## Blog 6: First Meeting of Semester 2
 
-#### 08/02/18
+#### 08/02/19
 
 I'm just back from my meeting with Ray. I showed him my current user interface and Google login functionality, as well as successful POSTing of uploaded images to my Flask API. I explained that my main aim is to have the bulk of the image processing functionality completed by the end of next week, so that I can focus on iplmenting the neural network. He is slightly concerned that I should be more conscious of time, because there will be a lot of trial and error involved in the training of the model. However, he thinks that if I can stick to the timelines laid out for myself and hit the milestones I am aiming for, I should be well on track to develop a well rounded application. The coming few weeks will be very demanding, but all the hours I put in will pay off in the end.
 
 ## Blog 7: Tackling Image Processing
 
-#### 12/02/18
+#### 12/02/19
 
 Over the last few days, I've been focusing on the image processing functionality of my Flask API. This is a core feature of my project, as it is central to the user application. I've been reading the OpenCV docs, a library providing computer vision tools, to gain a full understanding of how I should implement this component. One of the main issues I found was dealing with shadows in images. Below is an example of how my system was initially trying to process the images:
 
@@ -60,8 +60,26 @@ To solve this issue, I had to dilate the different planes in the image. I then m
 
 ## Blog 8: Test Driven Development
 
-#### 14/02/18
+#### 14/02/19
 
 A large component of any software application is testing the system to ensure it is robust as possible. It is important to ensure the code is designed to pass all test cases continually throughout the development lifecycle.
 
 Today I configured my Gitlab Continuous Integration pipeline. This pipeline runs every time I push changes to my online repository. Currently, it runs all EmberJS unit tests to ensure that all test cases pass with the new changes in place. I plan to add Flask unit tests, as well as integration and acceptance tests between all the different components of my application. This will help ensure that my application is of the highest standard for my final presentation in May.
+
+## Blog 9: Trial and Error
+
+#### 07/03/19
+
+My main focus for the past few weeks has been the core component of my project: the handwriting recognition model. A lot of research has gone into designing the model, and I understand that this will be a long process of trial and error to achieve as high an accuracy as possible.
+
+My initial design had 5 convolutional layers to extract key features from the images of lines of text. This was followed by 2 recurrent layers to generate the output matrix, and finally a CTC decoder to return the predictions. The Long Short-Term Memory approach with the RNN and CTC components is a common decoding mechanism for text, which is why I chose to apply it. I'm using the IAM dataset, which consists of over 13,000 images of lines of text. In my data preprocessor, I am resizing the images to a scaled 800x64 shape for use in my model.
+
+When I initially attempted to train the model with these configurations, the process finished with an accuracy of roughly 54%. Obviously, this is not sufficient, so I tried different techniques to improve this. I added 2 more convolutional layers to the model, as well as augmenting my dataset by applying random stretches to the training images.
+
+Unfortunately, these changes only helped me achieve an accuracy of 68%, which is the position I am currently in. I'm coming up with possible solutions for my low accuracy:
+
+-  Further augment my images, or look for another similar dataset.
+-  Train a model to identify individual words instead of full lines of text. The IAM dataset contains 136,000 images in this category, making this a viable option.
+-  Apply transfer learning to my neural network model. This is the reuse of publicly available models to train networks with comparatively small data. It involves importing the model, and redesigning the top 1 or 2 layers to fit my needs. This is the option I am leaning towards, as it can result in accuracies in the high nineties.
+
+I plan to carry out more research into what solution is best, and hopefully my model will be of significantly better quality soon.
