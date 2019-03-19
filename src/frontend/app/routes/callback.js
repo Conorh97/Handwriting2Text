@@ -40,5 +40,24 @@ export default Route.extend(OAuth2ImplicitGrantCallbackRouteMixin, {
 
     let cookieService = this.get('cookies');
     cookieService.write('currentUser', cookieContent);
+
+    this.get('ajax').request('http://localhost:5000/create_user', {
+      method: 'POST',
+      data: {
+        id: id,
+        forename: forename,
+        surname: surname,
+        email: email,
+        imageUrl: imageUrl,
+        accessToken: accessToken
+      },
+      dataType: 'json',
+      success: (result) => {
+        console.log(result);
+      },
+      error: (e) => {
+        console.log(e);
+      }
+    })
   }
 });

@@ -113,9 +113,10 @@ section {
 }
 
 #welcome-card img {
-  width: 100px;
-  height: 100px;
+  width: 80px;
+  height: 80px;
   display: inline;
+  margin: 10px;
 }
 
 .content-card {
