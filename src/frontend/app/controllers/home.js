@@ -1,11 +1,18 @@
 import Controller from '@ember/controller';
 
 export default Controller.extend({
+  showShare: false,
   showUpload: false,
   showResult: false,
   showInstructions: false,
   result: null,
   actions: {
+    displayShare: function() {
+      this.set('showShare', true);
+    },
+    hideShare: function() {
+      this.set('showShare', false);
+    },
     displayUpload: function() {
       this.set('showUpload', true);
     },

@@ -24,8 +24,6 @@ export default Component.extend({
           dataType: 'json',
           success: (response) => {
             this.hideResult();
-            console.log(response);
-            console.log(response.data);
           },
           error: (e) => {
             console.log(e);

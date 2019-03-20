@@ -2,9 +2,19 @@
   {{#upload-modal hideUpload=(action "hideUpload") displayResult=(action "displayResult")}}{{/upload-modal}}
 {{else if this.showResult}}
   {{#results-modal hideResult=(action "hideResult") result=result}}{{/results-modal}}
+{{else if this.showShare}}
+  {{#share-modal hideShare=(action "hideShare") documents=documents}}{{/share-modal}}
 {{else if this.showInstructions}}
   <h1>Instructions Modal</h1>
 {{/if}}
+<div class="content-card">
+  <h1>Share Documents</h1>
+  <a {{action "displayShare"}}>
+    <div class="card-icon">
+      <i class="fa fa-share"></i>
+    </div>
+  </a>
+</div>
 <div class="content-card">
   <h1>Upload Image(s)</h1>
   <a {{action "displayUpload"}}>

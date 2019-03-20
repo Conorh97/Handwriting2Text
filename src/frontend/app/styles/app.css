@@ -242,3 +242,57 @@ textarea {
   width: 240px;
 }
 
+#created-docs {
+  width: 650px;
+  height: 700px;
+  overflow-y: auto;
+  margin: 20px 0px 20px 30px;
+}
+
+.document-card-even, .document-card-odd {
+  width: 100%;
+  height: 60px;
+  margin: 7px 0px 7px 0px;
+  padding: 10px;
+  display: flex;
+}
+
+#created-docs p {
+  display: inline;
+  flex: 1;
+  margin-top: 5px;
+}
+
+#created-docs h4 {
+  text-align: center;
+  display: inline;
+  flex: 1;
+  margin-top: 5px;
+}
+
+.document-card-even {
+  background: #a4cafe;
+}
+
+.document-card-odd {
+  background: #a4dbfe;
+}
+
+.share-btn {
+  flex: 1;
+}
+
+.share-btn i {
+  display: inline;
+  float: right;
+  color: white;
+  background-color: #1a53ff;
+  font-size: 19px;
+  padding: 10px;
+  border-radius: 50%;
+}
+
+.share-btn i:hover {
+  background-color: white;
+  color: #1a53ff;
+}

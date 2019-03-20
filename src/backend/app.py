@@ -46,6 +46,14 @@ class CreatedDocument(db.Model):
         self.uid = uid
         self.title = title
 
+    def as_dict(self):
+        return {
+            'id': self.id,
+            'uid': self.uid,
+            'title': self.title,
+            'created_on': self.created_on.__str__()
+        }
+
 
 db.create_all()
 db.session.commit()
@@ -155,6 +163,17 @@ def download():
         doc.save(newFile)
         newFile.seek(0)
         return send_file(newFile, as_attachment=True, attachment_filename='{}.doc'.format(filename))
+    else:
+        return json.dumps({'status': '500', 'val': 'Error'})
+
+
+@app.route('/documents/<string:user_id>', methods=['GET'])
+@cross_origin()
+def documents(user_id):
+    if user_id is not None:
+        documents = CreatedDocument.query.filter_by(uid=user_id).all()
+        json_docs = [doc.as_dict() for doc in documents]
+        return json.dumps({'status': '201', 'val': json_docs})
     else:
         return json.dumps({'status': '500', 'val': 'Error'})
 

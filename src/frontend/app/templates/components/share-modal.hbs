@@ -1,0 +1,24 @@
+<div id="upload-box">
+  <i class="fa fa-times close-button" aria-hidden="true" onclick={{this.hideShare}}></i>
+  <div id="created-docs">
+    {{#each documents as |d index|}}
+      {{#if (eq (mod index 2) 0)}}
+        <div class="document-card-even">
+          <p>{{d.created_on}}</p>
+          <h4>{{d.title}}</h4>
+          <div class="share-btn">
+            <i class="fa fa-share"></i>
+          </div>
+        </div>
+      {{else}}
+        <div class="document-card-odd">
+          <p>{{d.created_on}}</p>
+          <h4>{{d.title}}</h4>
+          <div class="share-btn">
+            <i class="fa fa-share"></i>
+          </div>
+        </div>
+      {{/if}}
+    {{/each}}
+  </div>
+</div>
