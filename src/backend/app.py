@@ -59,6 +59,13 @@ db.create_all()
 db.session.commit()
 
 
+def callback(request_id, response, exception):
+    if exception:
+        print(exception)
+    else:
+        print("Permission Id: %s" % response.get('id'))
+
+
 @app.route('/create_user', methods=['POST'])
 @cross_origin()
 def create_user():
@@ -174,6 +181,49 @@ def documents(user_id):
         documents = CreatedDocument.query.filter_by(uid=user_id).all()
         json_docs = [doc.as_dict() for doc in documents]
         return json.dumps({'status': '201', 'val': json_docs})
+    else:
+        return json.dumps({'status': '500', 'val': 'Error'})
+
+
+@app.route('/share_document', methods=['POST'])
+@cross_origin()
+def share_document():
+    if request.form is not None:
+        id = str(request.form['id'])
+        uid = str(request.form['uid'])
+        emails = [request.form['emails[{}]'.format(i)] for i in range(len(request.form) - 3)]
+        permission = str(request.form['permission'])
+
+        user = User.query.filter_by(id=uid).first()
+        if user is not None:
+            with open('credentials.json') as f:
+                creds = json.load(f)
+
+            client_id = creds['web']['client_id']
+            client_secret = creds['web']['client_secret']
+            token_uri = creds['web']['token_uri']
+
+            user_creds = Credentials(token=user.access_token, token_uri=token_uri,
+                                     client_id=client_id, client_secret=client_secret)
+            service = build('drive', 'v3', credentials=user_creds)
+            batch = service.new_batch_http_request(callback=callback)
+
+            for email in emails:
+                user_permission = {
+                    'type': 'user',
+                    'role': permission,
+                    'emailAddress': email
+                }
+                batch.add(service.permissions().create(
+                    fileId=id,
+                    body=user_permission,
+                    fields='id'
+                ))
+
+            batch.execute()
+            return json.dumps({'status': '201', 'val': 'Document shared successfully.'})
+        else:
+            return json.dumps({'status': '500', 'val': 'Error fetching access token.'})
     else:
         return json.dumps({'status': '500', 'val': 'Error'})
 

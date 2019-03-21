@@ -23,7 +23,7 @@
       <input type="radio" class="permission-button" id="pButton4"
              checked={{eq permission "reader"}} onclick={{action (mut permission) "reader"}}/>
       <label for="pButton4">Reader</label>
-      <button class="sign-in-btn" class="btn btn-outline-primary">
+      <button class="sign-in-btn" class="btn btn-outline-primary" onclick={{action "shareDocument"}}>
         <i class="fa fa-google" style="font-size:25px;margin-top:2px"></i>
         <span class="button-text" style="font-size:20px;">Share with Google</span>
       </button>
