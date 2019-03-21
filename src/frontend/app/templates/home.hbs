@@ -1,11 +1,20 @@
+{{#if this.loading}}
+  <div class="action-loader-panel">
+    <div class="action-loader"></div>
+  </div>
+{{/if}}
 {{#if this.showUpload}}
-  {{#upload-modal hideUpload=(action "hideUpload") displayResult=(action "displayResult")}}{{/upload-modal}}
+  {{#upload-modal hideUpload=(action "hideUpload") displayResult=(action "displayResult")
+                  toggleLoading=(action "toggleLoading")}}{{/upload-modal}}
 {{else if this.showResult}}
-  {{#results-modal hideResult=(action "hideResult") result=result}}{{/results-modal}}
+  {{#results-modal hideResult=(action "hideResult") result=result
+                   toggleLoading=(action "toggleLoading")}}{{/results-modal}}
 {{else if this.showShare}}
-  {{#share-modal hideShare=(action "hideShare") displayShareDocument=(action "displayShareDocument") documents=documents}}{{/share-modal}}
+  {{#share-modal hideShare=(action "hideShare") displayShareDocument=(action "displayShareDocument")
+                 documents=documents}}{{/share-modal}}
 {{else if this.showShareDocument}}
-  {{#share-document hideShareDocument=(action "hideShareDocument") id=documentId title=documentTitle}}{{/share-document}}
+  {{#share-document hideShareDocument=(action "hideShareDocument") id=documentId title=documentTitle
+                    toggleLoading=(action "toggleLoading")}}{{/share-document}}
 {{else if this.showInstructions}}
   <h1>Instructions Modal</h1>
 {{/if}}

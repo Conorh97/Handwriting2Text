@@ -20,6 +20,7 @@ export default Component.extend({
     },
     uploadImages: function() {
       if (this.hasImages) {
+        this.toggleLoading();
         $.ajax({
           url: 'http://localhost:5000/upload',
           method: 'POST',
@@ -29,6 +30,7 @@ export default Component.extend({
           dataType: 'json',
           success: (response) => {
             console.log(response.val);
+            this.toggleLoading();
             this.hideUpload();
             this.displayResult(response.val);
           },

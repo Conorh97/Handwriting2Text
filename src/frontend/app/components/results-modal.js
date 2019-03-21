@@ -39,6 +39,7 @@ export default Component.extend({
         this.fd.append('content', content);
         let accessToken = this.getToken();
         if (accessToken) {
+          this.toggleLoading();
           this.fd.append('accessToken', accessToken);
           $.ajax({
             url: 'http://localhost:5000/create',
@@ -48,6 +49,7 @@ export default Component.extend({
             contentType: false,
             dataType: 'json',
             success: (response) => {
+              this.toggleLoading();
               this.hideResult();
             },
             error: (e) => {

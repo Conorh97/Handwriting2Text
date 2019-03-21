@@ -1,6 +1,7 @@
 import Controller from '@ember/controller';
 
 export default Controller.extend({
+  loading: false,
   showShare: false,
   showUpload: false,
   showResult: false,
@@ -10,6 +11,10 @@ export default Controller.extend({
   documentId: null,
   documentTitle: null,
   actions: {
+    toggleLoading: function() {
+      console.log(this.loading);
+      this.toggleProperty('loading');
+    },
     displayShare: function() {
       this.set('showShare', true);
     },

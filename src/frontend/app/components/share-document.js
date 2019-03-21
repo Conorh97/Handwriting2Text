@@ -27,6 +27,7 @@ export default Component.extend({
         for (let i = 0; i < this.selected.length; i++) {
           emails[i] = this.selected[i];
         }
+        this.toggleLoading();
         this.get('ajax').request('http://localhost:5000/share_document', {
           method: 'POST',
           data: {
@@ -37,6 +38,7 @@ export default Component.extend({
           },
           dataType: 'json',
           success: (result) => {
+            this.toggleLoading();
             this.hideShareDocument();
             console.log(result);
           },

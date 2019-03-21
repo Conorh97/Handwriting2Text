@@ -24,6 +24,35 @@
   animation: spin 2s linear infinite;
 }
 
+.action-loader-panel {
+  height: 100%;
+  width: 100%;
+  z-index: 1000;
+  position: absolute;
+  background: #000; /* fallback */
+  background: rgba(0,0,0,0.7);
+
+}
+
+.action-loader {
+  border: 16px solid #f3f3f3;
+  border-radius: 50%;
+  border-top: 16px solid blue;
+  border-right: 16px solid green;
+  border-bottom: 16px solid red;
+  border-left: 16px solid yellow;
+  width: 120px;
+  height: 120px;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 15%;
+  -webkit-animation: spin 2s linear infinite;
+  animation: spin 2s linear infinite;
+  background: #000; /* fallback */
+  background: rgba(0,0,0,0.3);
+  z-index: 10001;
+}
+
 @-webkit-keyframes spin {
   0% { -webkit-transform: rotate(0deg); }
   100% { -webkit-transform: rotate(360deg); }
@@ -33,3 +62,5 @@
   0% { transform: rotate(0deg); }
   100% { transform: rotate(360deg); }
 }
+
+
