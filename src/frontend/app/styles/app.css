@@ -53,12 +53,12 @@ section {
   border-radius: 50%;
 }
 
-#sign-out-btn {
+.sign-out-btn {
   height: 50px;
   margin: 40px 0px 0px 10px;
 }
 
-#sign-in-btn {
+.sign-in-btn {
   height: 50px;
   margin: 40px 0px 0px 75px;
 }
@@ -314,4 +314,42 @@ textarea {
   width: 200px;
   margin-top: 10px;
   margin-bottom: 20px;
+}
+
+#share-docs {
+  width: 550px;
+  max-height: 330px;
+  margin: 20px 0px 20px 80px;
+  text-align: center;
+}
+
+#share-docs h5 {
+  margin-top: 20px;
+  margin-bottom: 15px;
+}
+
+#permissions {
+  margin: 35px 0px 25px 0px;
+}
+
+.permission-button {
+  position: absolute;
+  left: -9999em;
+  top: -9999em;
+}
+
+.permission-button + label {
+  margin: 0px;
+  padding: .5em 1em;
+  cursor: pointer;
+  border: 1px solid #1a53ff;
+  border-radius: 5px;
+  font-size: 20px;
+  color: #1a53ff;
+  background-color: white;
+}
+
+.permission-button:checked + label {
+  color: white;
+  background-color: #1a53ff;
 }

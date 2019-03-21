@@ -6,7 +6,7 @@
         <div class="document-card-even">
           <p>{{d.created_on}}</p>
           <h4>{{d.title}}</h4>
-          <div class="share-btn">
+          <div class="share-btn" onclick={{action "selectDocument" d.id d.title}}>
             <i class="fa fa-share"></i>
           </div>
         </div>
@@ -14,7 +14,7 @@
         <div class="document-card-odd">
           <p>{{d.created_on}}</p>
           <h4>{{d.title}}</h4>
-          <div class="share-btn">
+          <div class="share-btn" onclick={{action "selectDocument" d.id d.title}}>
             <i class="fa fa-share"></i>
           </div>
         </div>

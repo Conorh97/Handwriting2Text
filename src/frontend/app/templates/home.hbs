@@ -3,7 +3,9 @@
 {{else if this.showResult}}
   {{#results-modal hideResult=(action "hideResult") result=result}}{{/results-modal}}
 {{else if this.showShare}}
-  {{#share-modal hideShare=(action "hideShare") documents=documents}}{{/share-modal}}
+  {{#share-modal hideShare=(action "hideShare") displayShareDocument=(action "displayShareDocument") documents=documents}}{{/share-modal}}
+{{else if this.showShareDocument}}
+  {{#share-document hideShareDocument=(action "hideShareDocument") id=documentId title=documentTitle}}{{/share-document}}
 {{else if this.showInstructions}}
   <h1>Instructions Modal</h1>
 {{/if}}
