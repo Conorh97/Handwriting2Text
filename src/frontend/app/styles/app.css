@@ -244,7 +244,7 @@ textarea {
 
 #created-docs {
   width: 650px;
-  height: 700px;
+  max-height: 330px;
   overflow-y: auto;
   margin: 20px 0px 20px 30px;
 }
@@ -295,4 +295,23 @@ textarea {
 .share-btn i:hover {
   background-color: white;
   color: #1a53ff;
+}
+
+#no-docs {
+  width: 650px;
+  height: 330px;
+  margin: auto;
+}
+
+#no-docs > * {
+  display: block;
+  text-align: center;
+  margin: auto;
+}
+
+#no-docs img {
+  height: 200px;
+  width: 200px;
+  margin-top: 10px;
+  margin-bottom: 20px;
 }
