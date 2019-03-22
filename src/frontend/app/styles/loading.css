@@ -27,11 +27,11 @@
 .action-loader-panel {
   height: 100%;
   width: 100%;
+  margin-top: -130px;
   z-index: 1000;
   position: absolute;
   background: #000; /* fallback */
   background: rgba(0,0,0,0.7);
-
 }
 
 .action-loader {
@@ -45,7 +45,7 @@
   height: 120px;
   margin-left: auto;
   margin-right: auto;
-  margin-top: 15%;
+  margin-top: 20%;
   -webkit-animation: spin 2s linear infinite;
   animation: spin 2s linear infinite;
   background: #000; /* fallback */

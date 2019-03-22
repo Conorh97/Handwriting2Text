@@ -4,17 +4,25 @@
   </div>
 {{/if}}
 {{#if this.showUpload}}
+  <div class="action-loader-panel" style="z-index: 8">
   {{#upload-modal hideUpload=(action "hideUpload") displayResult=(action "displayResult")
                   toggleLoading=(action "toggleLoading")}}{{/upload-modal}}
+  </div>
 {{else if this.showResult}}
+  <div class="action-loader-panel" style="z-index: 8">
   {{#results-modal hideResult=(action "hideResult") result=result
                    toggleLoading=(action "toggleLoading")}}{{/results-modal}}
+  </div>
 {{else if this.showShare}}
+  <div class="action-loader-panel" style="z-index: 8">
   {{#share-modal hideShare=(action "hideShare") displayShareDocument=(action "displayShareDocument")
                  documents=documents}}{{/share-modal}}
+  </div>
 {{else if this.showShareDocument}}
+  <div class="action-loader-panel" style="z-index: 8">
   {{#share-document hideShareDocument=(action "hideShareDocument") id=documentId title=documentTitle
                     toggleLoading=(action "toggleLoading")}}{{/share-document}}
+  </div>
 {{else if this.showInstructions}}
   <h1>Instructions Modal</h1>
 {{/if}}

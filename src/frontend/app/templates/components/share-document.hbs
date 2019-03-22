@@ -12,19 +12,16 @@
     {{/power-select-multiple}}
     <div id="permissions">
       <input type="radio" class="permission-button" id="pButton1"
-             checked={{eq permission "organizer/owner"}} onclick={{action (mut permission) "organizer/owner"}}/>
-      <label for="pButton1">Owner</label>
-      <input type="radio" class="permission-button" id="pButton2"
              checked={{eq permission "writer"}} onclick={{action (mut permission) "writer"}}/>
-      <label for="pButton2">Writer</label>
-      <input type="radio" class="permission-button" id="pButton3"
+      <label for="pButton1">Writer</label>
+      <input type="radio" class="permission-button" id="pButton2"
              checked={{eq permission "commenter"}} onclick={{action (mut permission) "commenter"}}/>
-      <label for="pButton3">Commenter</label>
-      <input type="radio" class="permission-button" id="pButton4"
+      <label for="pButton2">Commenter</label>
+      <input type="radio" class="permission-button" id="pButton3"
              checked={{eq permission "reader"}} onclick={{action (mut permission) "reader"}}/>
-      <label for="pButton4">Reader</label>
-      <button class="sign-in-btn" class="btn btn-outline-primary" onclick={{action "shareDocument"}}>
-        <i class="fa fa-google" style="font-size:25px;margin-top:2px"></i>
+      <label for="pButton3">Reader</label>
+      <button class="sign-in-btn" class="btn btn-primary" onclick={{action "shareDocument"}}>
+        <i class="fa fa-google" style="font-size:25px;margin-top:2px;color:white"></i>
         <span class="button-text" style="font-size:20px;">Share with Google</span>
       </button>
     </div>

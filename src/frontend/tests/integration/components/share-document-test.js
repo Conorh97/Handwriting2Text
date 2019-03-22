@@ -12,15 +12,15 @@ module('Integration | Component | share-document', function(hooks) {
 
     await render(hbs`{{share-document}}`);
 
-    assert.equal(this.element.textContent.trim(), '');
+    assert.equal($('#share-docs h5').text().trim(),
+      'Please enter the email address(es) of the people you would like to share this document with.');
 
     // Template block usage:
     await render(hbs`
-      {{#share-document}}
-        template block text
+      {{#share-document title='TestShare'}}
       {{/share-document}}
     `);
 
-    assert.equal(this.element.textContent.trim(), 'template block text');
+    assert.equal($('#share-docs h2').text().trim(), 'Document Title: TestShare');
   });
 });

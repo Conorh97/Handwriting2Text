@@ -12,15 +12,7 @@ module('Integration | Component | share-modal', function(hooks) {
 
     await render(hbs`{{share-modal}}`);
 
-    assert.equal(this.element.textContent.trim(), '');
-
-    // Template block usage:
-    await render(hbs`
-      {{#share-modal}}
-        template block text
-      {{/share-modal}}
-    `);
-
-    assert.equal(this.element.textContent.trim(), 'template block text');
+    assert.equal($('#no-docs h2').text().trim(), 'Oops!');
+    
   });
 });

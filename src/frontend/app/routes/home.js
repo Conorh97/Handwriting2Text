@@ -14,6 +14,7 @@ export default Route.extend(AuthenticatedRouteMixin, {
       async: false,
       success: (userInfo) => {
         if (userInfo.val.length > 0) {
+          console.log(userInfo.val);
           controller.set('documents', userInfo.val);
         }
       },

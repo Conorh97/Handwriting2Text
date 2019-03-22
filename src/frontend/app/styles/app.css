@@ -339,7 +339,7 @@ textarea {
 }
 
 .permission-button + label {
-  margin: 0px;
+  margin: 0px 5px 0px 5px;
   padding: .5em 1em;
   cursor: pointer;
   border: 1px solid #1a53ff;
