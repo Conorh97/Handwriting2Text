@@ -178,9 +178,34 @@ def download():
 @cross_origin()
 def documents(user_id):
     if user_id is not None:
-        documents = CreatedDocument.query.filter_by(uid=user_id).all()
-        json_docs = [doc.as_dict() for doc in documents]
-        return json.dumps({'status': '201', 'val': json_docs})
+        user = User.query.filter_by(id=user_id).first()
+        if user is not None:
+            with open('credentials.json') as f:
+                creds = json.load(f)
+
+            client_id = creds['web']['client_id']
+            client_secret = creds['web']['client_secret']
+            token_uri = creds['web']['token_uri']
+
+            user_creds = Credentials(token=user.access_token, token_uri=token_uri,
+                                     client_id=client_id, client_secret=client_secret)
+            service = build('drive', 'v3', credentials=user_creds)
+
+            drive_files = service.files().list().execute()
+            drive_ids = [file['id'] for file in drive_files['files']]
+            user_documents = CreatedDocument.query.filter_by(uid=user_id).all()
+
+            json_docs = []
+            for doc in user_documents:
+                if doc.id in drive_ids:
+                    json_docs.append(doc.as_dict())
+                else:
+                    CreatedDocument.query.filter_by(id=doc.id).delete()
+
+            db.session.commit()
+            return json.dumps({'status': '201', 'val': json_docs})
+        else:
+            return json.dumps({'status': '500', 'val': 'Error'})
     else:
         return json.dumps({'status': '500', 'val': 'Error'})
 
