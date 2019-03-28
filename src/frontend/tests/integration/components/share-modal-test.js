@@ -13,6 +13,6 @@ module('Integration | Component | share-modal', function(hooks) {
     await render(hbs`{{share-modal}}`);
 
     assert.equal($('#no-docs h2').text().trim(), 'Oops!');
-    
+
   });
 });
