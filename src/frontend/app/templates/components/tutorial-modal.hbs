@@ -1,0 +1,73 @@
+<div id="upload-box" style="width: 850px; height: 620px">
+  <i class="fa fa-times close-button" aria-hidden="true" onclick={{this.hideTutorial}}></i>
+  <div id="slide-box">
+    <i class="fa fa fa-angle-left prev-slide" onclick={{action "previousSlide"}}></i>
+    <i class="fa fa fa-angle-right next-slide" onclick={{action "nextSlide"}}></i>
+    <div style="margin: 10px">
+      <input type="radio" class="permission-button" id="tButton1"
+             checked={{eq upload true}} />
+      <label for="iButton1" style="font-size:16px" onclick={{action "showUploadSlides"}}>Upload Tutorial</label>
+      <input type="radio" class="permission-button" id="tButton2"
+             checked={{eq upload false}}/>
+      <label for="iButton2" style="font-size:16px" onclick={{action "showShareSlides"}}>Share Tutorial</label>
+    </div>
+    {{#if upload}}
+      {{#if (eq currentSlide 0)}}
+        <img src="/assets/images/tutorial-upload-1.png">
+        <div class="instructions">
+          <h5><b>Step 1:</b></h5>
+          <ul>
+            <li>First, click the blue box indicated in the image above.</li>
+            <li>This will open a local file selector where you can select images to upload.</li>
+            <li>Select your chosen image(s) and hit enter.</li>
+          </ul>
+        </div>
+      {{else if (eq currentSlide 1)}}
+        <img src="/assets/images/tutorial-upload-2.png">
+        <div class="instructions">
+          <h5><b>Step 2:</b></h5>
+          <ul>
+            <li>You can upload more images to be converted by clicking the box again.</li>
+            <li>The amount of images currently uploaded is indicated in the blue box.</li>
+            <li>Once images have been added, the circled button is then available to be clicked.</li>
+            <li>Click the button to begin the conversion process.</li>
+          </ul>
+        </div>
+      {{else}}
+        <img src="/assets/images/tutorial-upload-3.png">
+        <div class="instructions">
+          <h5><b>Step 3:</b></h5>
+          <ul>
+            <li>The resulting text is displayed in the large box. This can be edited before saving the document.</li>
+            <li>Enter your desired file name in the indicated input field.</li>
+            <li>Finally, you can click the relevant button to save the document to your Google Drive or
+                download it as a local file.</li>
+          </ul>
+        </div>
+      {{/if}}
+    {{else}}
+      {{#if (eq currentSlide 0)}}
+        <img src="/assets/images/tutorial-share-1.png">
+        <div class="instructions">
+          <h5><b>Step 1:</b></h5>
+          <ul>
+            <li>The application keeps track of each document you save to Google Drive, allowing you to share them
+                with your friends via email.</li>
+            <li>Click the indicated blue button of the document you would like to share.</li>
+          </ul>
+        </div>
+      {{else}}
+        <img src="/assets/images/tutorial-share-2.png">
+        <div class="instructions">
+          <h5><b>Step 2:</b></h5>
+          <ul>
+            <li>You can add multiple email addresses to the input field shown above.</li>
+            <li>After this, you must select what level of access you are granting the user(s) to your document by
+                clicking the relevant option.</li>
+            <li>Click the "Share with Google" button to complete the process.</li>
+          </ul>
+        </div>
+      {{/if}}
+    {{/if}}
+  </div>
+</div>

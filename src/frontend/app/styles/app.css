@@ -353,3 +353,47 @@ textarea {
   color: white;
   background-color: #1a53ff;
 }
+
+#slide-box {
+  width: 750px;
+  margin: 20px 0px 20px 30px;
+  text-align: center;
+}
+
+#slide-box img {
+  margin: auto;
+  width: 650px;
+  height: 340px;
+}
+
+.prev-slide {
+  position: absolute;
+  left: 25px;
+  top: 200px;
+  font-size: 30px;
+  padding: 5px 15px;
+  border-radius: 50%;
+  color: white;
+  background-color: #1a53ff;
+}
+
+.next-slide {
+  position: absolute;
+  right: 40px;
+  top: 200px;
+  font-size: 30px;
+  padding: 5px 15px;
+  border-radius: 50%;
+  color: white;
+  background-color: #1a53ff;
+}
+
+.instructions {
+  margin: 9px 0px 7px 70px;
+  width: 600px;
+  text-align: left;
+}
+
+.instructions li {
+  font-size: 17px;
+}
