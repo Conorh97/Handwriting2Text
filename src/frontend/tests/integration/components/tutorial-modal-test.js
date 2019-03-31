@@ -43,7 +43,7 @@ module('Integration | Component | tutorial-modal', function(hooks) {
       '                with your friends via email.');
 
     await click('#labelB1');
-    
+
     assert.equal($('.instructions ul li:first-child').text().trim(),
       'First, click the blue box indicated in the image above.');
 
