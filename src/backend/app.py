@@ -1,4 +1,4 @@
-from flask import Flask, request, send_file, Response
+from flask import Flask, request
 from flask_sqlalchemy import SQLAlchemy
 from flask_cors import CORS, cross_origin
 from werkzeug import secure_filename
@@ -177,25 +177,6 @@ def create():
             return json.dumps({'status': '201', 'val': 'Google Doc Created'})
         else:
             return json.dumps({'status': '500', 'val': 'Access token expired.'})
-    else:
-        return json.dumps({'status': '500', 'val': 'Error'})
-
-# Not downloading on client side, will revisit
-
-
-@app.route('/download', methods=['POST'])
-@cross_origin()
-def download():
-    if request.form is not None:
-        filename = str(request.form['filename'])
-        content = str(request.form['content'])
-        doc = Document()
-        doc.add_heading(filename, 0)
-        doc.add_paragraph(content)
-        new_file = BytesIO()
-        doc.save(new_file)
-        new_file.seek(0)
-        return send_file(new_file, as_attachment=True, attachment_filename='{}.doc'.format(filename))
     else:
         return json.dumps({'status': '500', 'val': 'Error'})
 

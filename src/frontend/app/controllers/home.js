@@ -12,7 +12,6 @@ export default Controller.extend({
   documentTitle: null,
   actions: {
     toggleLoading: function() {
-      console.log(this.loading);
       this.toggleProperty('loading');
     },
     displayShare: function() {

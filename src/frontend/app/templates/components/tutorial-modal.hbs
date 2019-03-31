@@ -6,10 +6,10 @@
     <div style="margin: 10px">
       <input type="radio" class="permission-button" id="tButton1"
              checked={{eq upload true}} />
-      <label for="iButton1" style="font-size:16px" onclick={{action "showUploadSlides"}}>Upload Tutorial</label>
+      <label id="labelB1" for="iButton1" style="font-size:16px" onclick={{action "showUploadSlides"}}>Upload Tutorial</label>
       <input type="radio" class="permission-button" id="tButton2"
              checked={{eq upload false}}/>
-      <label for="iButton2" style="font-size:16px" onclick={{action "showShareSlides"}}>Share Tutorial</label>
+      <label id="labelB2" for="iButton2" style="font-size:16px" onclick={{action "showShareSlides"}}>Share Tutorial</label>
     </div>
     {{#if upload}}
       {{#if (eq currentSlide 0)}}

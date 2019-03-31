@@ -5,10 +5,8 @@ backend/credentials.json
 backend/quickstart.py
 backend/tmp-images
 backend/__pycache__
-model/data/
-model/logs*
-model/snapshot/
-model/ModelTensor.py
-model/CTCWordBeamSearch/
-model/__pycache__
-model/git_snapshot/
+backend/model/data/
+backend/model/logs/
+backend/model/snapshot/
+backend/model/__pycache__
+backend/model/venv/

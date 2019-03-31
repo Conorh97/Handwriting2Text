@@ -1,10 +1,12 @@
 import Component from '@ember/component';
 import { inject } from '@ember/service';
 import { computed } from '@ember/object';
+import FileSaverMixin from 'ember-cli-file-saver/mixins/file-saver';
 
-export default Component.extend({
+export default Component.extend(FileSaverMixin, {
   ajax: inject(),
   cookies: inject(),
+  noName: false,
   fd: computed(() => {
     return new FormData();
   }),
@@ -13,28 +15,17 @@ export default Component.extend({
       let filename = this.get('filename');
       let content = this.result;
       if (filename != null) {
-        this.fd.append('filename', filename);
-        this.fd.append('content', content);
-        $.ajax({
-          url: 'http://localhost:5000/download',
-          method: 'POST',
-          data: this.fd,
-          processData: false,
-          contentType: false,
-          dataType: 'json',
-          success: (response) => {
-            this.hideResult();
-          },
-          error: (e) => {
-            console.log(e);
-          }
-        })
+        this.set('noName', false);
+        this.saveFileAs(filename + '.doc', content, 'application/msword');
+      } else {
+        this.set('noName', true);
       }
     },
     createGoogleDoc: function() {
       let filename = this.get('filename');
       let content = this.result;
       if (filename != null) {
+        this.set('noName', false);
         this.fd.append('filename', filename);
         this.fd.append('content', content);
         let accessToken = this.getToken();
@@ -50,13 +41,14 @@ export default Component.extend({
             dataType: 'json',
             success: (response) => {
               this.toggleLoading();
-              this.hideResult();
             },
             error: (e) => {
               console.log(e);
             }
           })
         }
+      } else {
+        this.set('noName', true);
       }
     }
   },

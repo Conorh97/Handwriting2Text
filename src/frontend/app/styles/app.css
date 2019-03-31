@@ -397,3 +397,9 @@ textarea {
 .instructions li {
   font-size: 17px;
 }
+
+.error-message {
+  font-size: 15px;
+  color: red;
+  margin: 0px 6px;
+}
