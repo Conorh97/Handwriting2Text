@@ -1,4 +1,4 @@
-from flask import Flask, request, send_file
+from flask import Flask, request, send_file, Response
 from flask_sqlalchemy import SQLAlchemy
 from flask_cors import CORS, cross_origin
 from werkzeug import secure_filename
@@ -7,15 +7,28 @@ from docx import Document
 from io import BytesIO
 from googleapiclient.discovery import build
 from google.oauth2.credentials import Credentials
+from model.Model import Model
+from model.Loader import Loader
+from spellchecker import SpellChecker
 import os
 import json
 
+character_list_path = 'model/character_list.txt'
+data_path = './tmp-images/'
+image_width = 128
+image_height = 32
+batch_size = 1
+max_text_length = 32
 
 SCOPES = ['https://www.googleapis.com/auth/documents']
 DOWNLOAD_DIRECTORY = '{}/tmp-images'.format(os.getcwd())
 app = Flask(__name__, static_url_path='')
 app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://admin:p4ssw0rd@localhost/H2TXT'
 db = SQLAlchemy(app)
+
+with open(character_list_path, "r+") as f:
+    character_list = sorted(list(f.read()))
+model = Model(image_width, image_height, batch_size, character_list, max_text_length, False, True)
 
 
 class User(db.Model):
@@ -103,6 +116,19 @@ def upload():
             filename = secure_filename(file.filename)
             file.save('{}/{}'.format(DOWNLOAD_DIRECTORY, filename))
             process_image(filename)
+            os.remove('{}/{}'.format(DOWNLOAD_DIRECTORY, filename))
+
+        data_loader = Loader(data_path, batch_size, (image_width, image_height), max_text_length, True)
+        spell = SpellChecker()
+
+        while data_loader.has_next():
+            batch = data_loader.get_next()
+            predicted = model.infer_single_batch(batch)
+
+            for i in range(len(predicted)):
+                print(predicted[i])
+                corrected = spell.correction(predicted[i])
+                print(corrected)
         return json.dumps({'status': '201', 'val': 'This is some template result text to fill the textarea.'})
     else:
         return json.dumps({'status': '500', 'val': 'Error'})
@@ -166,10 +192,10 @@ def download():
         doc = Document()
         doc.add_heading(filename, 0)
         doc.add_paragraph(content)
-        newFile = BytesIO()
-        doc.save(newFile)
-        newFile.seek(0)
-        return send_file(newFile, as_attachment=True, attachment_filename='{}.doc'.format(filename))
+        new_file = BytesIO()
+        doc.save(new_file)
+        new_file.seek(0)
+        return send_file(new_file, as_attachment=True, attachment_filename='{}.doc'.format(filename))
     else:
         return json.dumps({'status': '500', 'val': 'Error'})
 
@@ -258,3 +284,4 @@ if __name__ == "__main__":
         'DEBUG': True,
     })
     app.run(host='0.0.0.0')
+

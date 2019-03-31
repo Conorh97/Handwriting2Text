@@ -7,12 +7,13 @@ class Model:
 
     snapshot = 0
 
-    def __init__(self, image_width, image_height, batch_size, characters, max_text_length, gpu):
+    def __init__(self, image_width, image_height, batch_size, characters, max_text_length, gpu, inferring=False):
         self.image_width = image_width
         self.image_height = image_height
         self.batch_size = batch_size
         self.characters = characters
         self.max_text_length = max_text_length
+        self.inferring = inferring
 
         self.is_train = tf.placeholder(tf.bool, name="is_train")
         self.input_images = tf.placeholder(tf.float32, shape=(None, self.image_width, self.image_height))
@@ -37,56 +38,81 @@ class Model:
         config = tf.ConfigProto(allow_soft_placement = True)
         self.sess = tf.Session(config=config)
         self.saver = tf.train.Saver(max_to_keep=1)
-        self.sess.run(tf.global_variables_initializer())
-        self.writer = tf.summary.FileWriter('./logs', self.sess.graph)
+        if self.inferring:
+            model_dir = 'model/snapshot'
+        else:
+            model_dir = './snapshot'
+        latest = tf.train.latest_checkpoint(model_dir)
+
+        if latest:
+            self.saver.restore(self.sess, latest)
+        else:
+            self.sess.run(tf.global_variables_initializer())
+
+        if self.inferring:
+            self.writer = tf.summary.FileWriter('model/logs', self.sess.graph)
+        else:
+            self.writer = tf.summary.FileWriter('./logs', self.sess.graph)
 
     def prepare_cnn(self):
         self.cnn = tf.expand_dims(input=self.input_images, axis=3)
 
         # create layers
-        kernel = tf.Variable(tf.truncated_normal([5, 5, 1, 64], stddev=0.1))
+        kernel = tf.Variable(tf.truncated_normal([5, 5, 1, 32], stddev=0.1))
         convolution = tf.nn.conv2d(self.cnn, kernel, padding='SAME',  strides=(1, 1, 1, 1))
         convolution_normalised = tf.layers.batch_normalization(convolution, training=self.is_train)
         relu = tf.nn.relu(convolution_normalised)
-        self.cnn = tf.nn.max_pool(relu, (1, 2, 2, 1), (1, 2, 2, 1), 'VALID')
+        kernel2 = tf.Variable(tf.truncated_normal([5, 5, 32, 32], stddev=0.1))
+        convolution2 = tf.nn.conv2d(relu, kernel2, padding='SAME',  strides=(1, 1, 1, 1))
+        convolution_normalised2 = tf.layers.batch_normalization(convolution2, training=self.is_train)
+        relu2 = tf.nn.relu(convolution_normalised2)
+        self.cnn = tf.nn.max_pool(relu2, (1, 2, 2, 1), (1, 2, 2, 1), 'VALID')
 
-        kernel = tf.Variable(tf.truncated_normal([5, 5, 64, 128], stddev=0.1))
+        kernel = tf.Variable(tf.truncated_normal([5, 5, 32, 64], stddev=0.1))
         convolution = tf.nn.conv2d(self.cnn, kernel, padding='SAME',  strides=(1, 1, 1, 1))
         convolution_normalised = tf.layers.batch_normalization(convolution, training=self.is_train)
         relu = tf.nn.relu(convolution_normalised)
+        kernel2 = tf.Variable(tf.truncated_normal([5, 5, 64, 64], stddev=0.1))
+        convolution2 = tf.nn.conv2d(relu, kernel2, padding='SAME',  strides=(1, 1, 1, 1))
+        convolution_normalised2 = tf.layers.batch_normalization(convolution2, training=self.is_train)
+        relu2 = tf.nn.relu(convolution_normalised2)
+        self.cnn = tf.nn.max_pool(relu2, (1, 2, 2, 1), (1, 2, 2, 1), 'VALID')
+
+        kernel = tf.Variable(tf.truncated_normal([3, 3, 64, 128], stddev=0.1))
+        convolution = tf.nn.conv2d(self.cnn, kernel, padding='SAME',  strides=(1, 1, 1, 1))
+        convolution_normalised = tf.layers.batch_normalization(convolution, training=self.is_train)
+        relu = tf.nn.relu(convolution_normalised)
+        kernel2 = tf.Variable(tf.truncated_normal([3, 3, 128, 128], stddev=0.1))
+        convolution2 = tf.nn.conv2d(relu, kernel2, padding='SAME',  strides=(1, 1, 1, 1))
+        convolution_normalised2 = tf.layers.batch_normalization(convolution2, training=self.is_train)
+        relu2 = tf.nn.relu(convolution_normalised2)
+        self.cnn = tf.nn.max_pool(relu2, (1, 1, 2, 1), (1, 1, 2, 1), 'VALID')
 
         kernel = tf.Variable(tf.truncated_normal([3, 3, 128, 128], stddev=0.1))
-        convolution = tf.nn.conv2d(relu, kernel, padding='SAME',  strides=(1, 1, 1, 1))
+        convolution = tf.nn.conv2d(self.cnn, kernel, padding='SAME',  strides=(1, 1, 1, 1))
         convolution_normalised = tf.layers.batch_normalization(convolution, training=self.is_train)
         relu = tf.nn.relu(convolution_normalised)
-        self.cnn = tf.nn.max_pool(relu, (1, 2, 2, 1), (1, 2, 2, 1), 'VALID')
+        kernel2 = tf.Variable(tf.truncated_normal([3, 3, 128, 128], stddev=0.1))
+        convolution2 = tf.nn.conv2d(relu, kernel2, padding='SAME',  strides=(1, 1, 1, 1))
+        convolution_normalised2 = tf.layers.batch_normalization(convolution2, training=self.is_train)
+        relu2 = tf.nn.relu(convolution_normalised2)
+        self.cnn = tf.nn.max_pool(relu2, (1, 1, 2, 1), (1, 1, 2, 1), 'VALID')
 
         kernel = tf.Variable(tf.truncated_normal([3, 3, 128, 256], stddev=0.1))
         convolution = tf.nn.conv2d(self.cnn, kernel, padding='SAME',  strides=(1, 1, 1, 1))
         convolution_normalised = tf.layers.batch_normalization(convolution, training=self.is_train)
         relu = tf.nn.relu(convolution_normalised)
-
-        kernel = tf.Variable(tf.truncated_normal([3, 3, 256, 256], stddev=0.1))
-        convolution = tf.nn.conv2d(relu, kernel, padding='SAME',  strides=(1, 1, 1, 1))
-        convolution_normalised = tf.layers.batch_normalization(convolution, training=self.is_train)
-        relu = tf.nn.relu(convolution_normalised)
-
-        kernel = tf.Variable(tf.truncated_normal([3, 3, 256, 512], stddev=0.1))
-        convolution = tf.nn.conv2d(relu, kernel, padding='SAME',  strides=(1, 1, 1, 1))
-        convolution_normalised = tf.layers.batch_normalization(convolution, training=self.is_train)
-        relu = tf.nn.relu(convolution_normalised)
-
-        kernel = tf.Variable(tf.truncated_normal([3, 3, 512, 512], stddev=0.1))
-        convolution = tf.nn.conv2d(relu, kernel, padding='SAME',  strides=(1, 1, 1, 1))
-        convolution_normalised = tf.layers.batch_normalization(convolution, training=self.is_train)
-        relu = tf.nn.relu(convolution_normalised)
-        self.cnn = tf.nn.max_pool(relu, (1, 2, 2, 1), (1, 2, 2, 1), 'VALID')
+        kernel2 = tf.Variable(tf.truncated_normal([3, 3, 256, 256], stddev=0.1))
+        convolution2 = tf.nn.conv2d(relu, kernel2, padding='SAME',  strides=(1, 1, 1, 1))
+        convolution_normalised2 = tf.layers.batch_normalization(convolution2, training=self.is_train)
+        relu2 = tf.nn.relu(convolution_normalised2)
+        self.cnn = tf.nn.max_pool(relu2, (1, 1, 2, 1), (1, 1, 2, 1), 'VALID')
 
     def prepare_rnn(self):
-        self.rnn = tf.squeeze(tf.slice(self.cnn, [0, 0, 0, 0], [self.batch_size, 100, 1, 512]), axis=[2])
+        self.rnn = tf.squeeze(self.cnn, axis=[2])
 
-        hidden_cells = 512
-        cells = [tf.contrib.rnn.LSTMCell(num_units=hidden_cells, state_is_tuple=True)] * 2
+        hidden_cells = 256
+        cells = [tf.contrib.rnn.LSTMCell(num_units=hidden_cells, state_is_tuple=True) for i in range(2)]
         stacked = tf.contrib.rnn.MultiRNNCell(cells, state_is_tuple=True)
 
         bidirectional = tf.nn.bidirectional_dynamic_rnn(cell_fw=stacked, cell_bw=stacked,
@@ -109,24 +135,11 @@ class Model:
 
         self.ctc_input = tf.placeholder(tf.float32, shape=[self.max_text_length, None, len(self.characters) + 1])
         self.element_loss = tf.nn.ctc_loss(labels=self.ground_truth_texts, inputs=self.ctc_input,
-                                            sequence_length=self.sequence_length, ctc_merge_repeated=True,
-                                            ignore_longer_outputs_than_inputs=True)
+                                           sequence_length=self.sequence_length, ctc_merge_repeated=True,
+                                           ignore_longer_outputs_than_inputs=True)
 
         self.decoder = tf.nn.ctc_beam_search_decoder(inputs=self.ctc, sequence_length=self.sequence_length,
                                                      beam_width=50, merge_repeated=False)
-        """
-        wbs = tf.load_op_library('CTCWordBeamSearch/cpp/proj/TFWordBeamSearch.so')
-        chars = str().join(self.characters)
-
-        with open('./word_beam_list.txt') as f:
-            word_characters = f.read().splitlines()[0]
-
-        with open('./corpus.txt') as f:
-            corpus = f.read()
-
-        self.decoder = wbs.word_beam_search(tf.nn.softmax(self.ctc, dim=2), 25, 'Words', 0.0, corpus.encode('utf8'),
-                                            chars.encode('utf8'), word_characters.encode('utf8'))
-        """
 
     def sparse(self, texts):
         indices = []
@@ -141,18 +154,10 @@ class Model:
                 indices.append([element, i])
                 values.append(l)
 
-        return (indices, values, shape)
+        return indices, values, shape
 
     def decoder_output(self, ctc_output, batch_size):
         encoded = [[]] * batch_size
-        """
-        blank = len(self.characters)
-        for b in range(batch_size):
-            for label in ctc_output[b]:
-                if label == blank:
-                    break
-                encoded[b].append(label)
-        """
 
         decoded = ctc_output[0][0]
 
@@ -191,7 +196,7 @@ class Model:
 
         return loss
 
-    def infer_single_batch(self, batch, labelling=False, greater_than=False):
+    def infer_single_batch(self, batch):
         batch_size = len(batch.images)
 
         feed = {
@@ -203,25 +208,11 @@ class Model:
         evaluation = self.sess.run([self.decoder, self.ctc], feed)
         decoded_texts = self.decoder_output(evaluation[0], batch_size)
 
-        probabilities = None
-        if labelling:
-            if greater_than:
-                sparse = self.sparse(batch.sample_texts)
-            else:
-                sparse = self.sparse(decoded_texts)
-            ctc_input = evaluation[1]
-            feed = {
-                self.ctc_input: ctc_input,
-                self.ground_truth_texts: sparse,
-                self.sequence_length: [self.max_text_length] * batch_size,
-                self.is_train: False
-            }
-
-            loss_values = self.sess.run(self.element_loss, feed)
-            probabilities = np.exp(-loss_values)
-
-        return (decoded_texts, probabilities)
+        return decoded_texts
 
     def save(self):
         Model.snapshot += 1
-        self.saver.save(self.sess, './snapshot/', global_step=Model.snapshot)
+        if self.inferring:
+            self.saver.save(self.sess, 'model/snapshot/', global_step=Model.snapshot)
+        else:
+            self.saver.save(self.sess, './snapshot/', global_step=Model.snapshot)

@@ -20,15 +20,25 @@ class Batch(object):
 
 class Loader(object):
 
-    def __init__(self, file_path, batch_size, image_size, max_length):
+    def __init__(self, file_path, batch_size, image_size, max_length, execute=False):
         self.augment = False
         self.current_index = 0
+        self.file_path = file_path
         self.batch_size = batch_size
         self.image_size = image_size
+        self.max_length = max_length
+        self.execute = execute
         self.samples = []
+
+        if not execute:
+            self.prepare_training()
+        else:
+            self.prepare_prediction()
+
+    def prepare_training(self):
         characters = set()
 
-        with open("{}lines.txt".format(file_path)) as f:
+        with open("{}words.txt".format(self.file_path)) as f:
             lines = [line.strip("\n") for line in f.readlines() if len(line) > 2]
 
         for line in lines:
@@ -37,9 +47,9 @@ class Loader(object):
 
             elements = line.strip().split(" ")
             file_name_split = elements[0].split("-")
-            file_name = file_path + "lines/" + file_name_split[0] + "/" + file_name_split[0] \
+            file_name = self.file_path + "words/" + file_name_split[0] + "/" + file_name_split[0] \
                         + "-" + file_name_split[1] + "/" + elements[0] + ".png"
-            gt_text = self.truncate(" ".join(elements[8:]), max_length)
+            gt_text = self.truncate(" ".join(elements[8:]), self.max_length)
             characters = characters.union(set(list(gt_text)))
 
             if not os.path.getsize(file_name):
@@ -47,7 +57,7 @@ class Loader(object):
 
             self.samples.append(SingleSample(gt_text, file_name))
 
-        split_index = int(0.95 * len(self.samples))
+        split_index = int(0.75 * len(self.samples))
 
         self.training_set = self.samples[:split_index]
         self.testing_set = self.samples[split_index:]
@@ -56,6 +66,13 @@ class Loader(object):
         self.randomise_training_set()
 
         self.character_list = sorted(list(characters))
+
+    def prepare_prediction(self):
+        for file_name in sorted(os.listdir(self.file_path), key=lambda x: int(x.split("-")[0])):
+            if file_name.endswith(".png") or file_name.endswith(".jpg") or file_name.endswith(".jpeg"):
+                self.samples.append(SingleSample(None, self.file_path + file_name))
+
+        self.character_list = []
 
     def truncate(self, text, max_length):
         text_cost = 0
@@ -83,7 +100,7 @@ class Loader(object):
     def get_batch_info(self):
         batch_number = self.current_index // self.batch_size + 1
         overall_batches = len(self.samples) // self.batch_size
-        return (batch_number, overall_batches)
+        return batch_number, overall_batches
 
     def has_next(self):
         return self.current_index + self.batch_size <= len(self.samples)
@@ -106,9 +123,28 @@ class Loader(object):
 
         if self.augment:
             stretch = (random.random() - 0.5)
-            stretched_width = max(int(width * (1 + stretch)), 1)
-            image = cv2.resize(image, (stretched_width, height))
+            stretched_width = max(int(image.shape[1] * (1 + stretch)), 1)
+            image = cv2.resize(image, (stretched_width, image.shape[0]))
 
-        processed = cv2.resize(image, (width, height))
-        processed = cv2.transpose(processed)
-        return processed
+        h = image.shape[0]
+        w = image.shape[1]
+        fx = w / width
+        fy = h / height
+        f = max(fx, fy)
+
+        new_size = (max(min(width, int(w / f)), 1), max(min(height, int(h / f)), 1))
+        image = cv2.resize(image, new_size)
+        target = np.ones([height, width]) * 255
+        target[0:new_size[1], 0:new_size[0]] = image
+
+        image = cv2.transpose(target)
+
+        (m, s) = cv2.meanStdDev(image)
+        m = m[0][0]
+        s = s[0][0]
+        image = image - m
+        image = image / s if s>0 else image
+
+
+        return image
+

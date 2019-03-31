@@ -3,23 +3,23 @@ import argparse
 import editdistance
 from Loader import Loader
 from Model import Model
+from spellchecker import SpellChecker
 
 
 character_list_path = './character_list.txt'
 data_path = './data/'
 
-image_width = 800
-image_height = 64
+image_width = 128
+image_height = 32
 batch_size = 50
-max_text_length = 100
-epoch_early_stop = 5
+max_text_length = 32
+epoch_early_stop = 6
 
 
 def train(model, data_loader):
     epoch = 1
-    since_improved = 0
     best_error_rate = float('inf')
-    while epoch <= 20:
+    while epoch < 40:
         print('Epoch: {}'.format(epoch))
         data_loader.randomise_training_set()
         while data_loader.has_next():
@@ -37,21 +37,15 @@ def train(model, data_loader):
 
         if error_rate < best_error_rate:
             best_error_rate = error_rate
-            since_improved = 0
             model.save()
             with open('accuracy.text', 'w') as f:
                 f.write('Accuracy of saved model: {}'.format(error_rate * 100))
-        else:
-            since_improved += 1
-
-        #if since_improved >= epoch_early_stop:
-        #    print('Halted training at {} epochs'.format(epoch_early_stop))
-        #    break
 
         epoch += 1
 
 
 def test(model, data_loader):
+    spell = SpellChecker()
     data_loader.set_validation_set()
     character_error = 0
     character_count = 0
@@ -61,15 +55,16 @@ def test(model, data_loader):
         batch = data_loader.get_next()
         batch_info = data_loader.get_batch_info()
         print("Batch: ({} / {})".format(batch_info[0], batch_info[1]))
-        predicted = model.infer_single_batch(batch)[0]
+        predicted = model.infer_single_batch(batch)
 
         for i in range(len(predicted)):
             print(batch.sample_texts[i])
-            print(predicted[i])
-            if batch.sample_texts[i] == predicted[i]:
+            corrected = spell.correction(predicted[i])
+            print(corrected)
+            if batch.sample_texts[i] == corrected:
                 line_correct += 1
             line_count += 1
-            error = editdistance.eval(predicted[i], batch.sample_texts[i])
+            error = editdistance.eval(corrected, batch.sample_texts[i])
             character_error += error
             character_count += len(batch.sample_texts[i])
 
