@@ -3,8 +3,6 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_cors import CORS, cross_origin
 from werkzeug import secure_filename
 from image import process_image
-from docx import Document
-from io import BytesIO
 from googleapiclient.discovery import build
 from google.oauth2.credentials import Credentials
 from model.Model import Model
@@ -12,6 +10,7 @@ from model.Loader import Loader
 from spellchecker import SpellChecker
 import os
 import json
+import string
 
 character_list_path = 'model/character_list.txt'
 data_path = './tmp-images/'
@@ -25,6 +24,13 @@ DOWNLOAD_DIRECTORY = '{}/tmp-images'.format(os.getcwd())
 app = Flask(__name__, static_url_path='')
 app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://admin:p4ssw0rd@localhost/H2TXT'
 db = SQLAlchemy(app)
+
+with open('credentials.json') as f:
+    creds = json.load(f)
+
+client_id = creds['web']['client_id']
+client_secret = creds['web']['client_secret']
+token_uri = creds['web']['token_uri']
 
 with open(character_list_path, "r+") as f:
     character_list = sorted(list(f.read()))
@@ -111,6 +117,8 @@ def create_user():
 @cross_origin()
 def upload():
     if request.files is not None:
+        result = ""
+
         for i in range(len(request.files)):
             file = request.files['image[{}]'.format(i)]
             filename = secure_filename(file.filename)
@@ -129,7 +137,14 @@ def upload():
                 print(predicted[i])
                 corrected = spell.correction(predicted[i])
                 print(corrected)
-        return json.dumps({'status': '201', 'val': 'This is some template result text to fill the textarea.'})
+                if predicted[i][-1] in string.punctuation:
+                    corrected += predicted[i][-1]
+                if predicted[i][0].isupper():
+                    corrected = corrected.replace(corrected[0], corrected[0].upper())
+                result += corrected
+                result += " "
+
+        return json.dumps({'status': '201', 'val': result})
     else:
         return json.dumps({'status': '500', 'val': 'Error'})
 
@@ -145,13 +160,6 @@ def create():
         user = User.query.filter_by(access_token=access_token).first()
 
         if user is not None:
-            with open('credentials.json') as f:
-                creds = json.load(f)
-
-            client_id = creds['web']['client_id']
-            client_secret = creds['web']['client_secret']
-            token_uri = creds['web']['token_uri']
-
             user_creds = Credentials(token=access_token, token_uri=token_uri,
                                      client_id=client_id, client_secret=client_secret)
             service = build('docs', 'v1', credentials=user_creds)
@@ -187,13 +195,6 @@ def documents(user_id):
     if user_id is not None:
         user = User.query.filter_by(id=user_id).first()
         if user is not None:
-            with open('credentials.json') as f:
-                creds = json.load(f)
-
-            client_id = creds['web']['client_id']
-            client_secret = creds['web']['client_secret']
-            token_uri = creds['web']['token_uri']
-
             user_creds = Credentials(token=user.access_token, token_uri=token_uri,
                                      client_id=client_id, client_secret=client_secret)
             service = build('drive', 'v3', credentials=user_creds)
@@ -228,13 +229,6 @@ def share_document():
 
         user = User.query.filter_by(id=uid).first()
         if user is not None:
-            with open('credentials.json') as f:
-                creds = json.load(f)
-
-            client_id = creds['web']['client_id']
-            client_secret = creds['web']['client_secret']
-            token_uri = creds['web']['token_uri']
-
             user_creds = Credentials(token=user.access_token, token_uri=token_uri,
                                      client_id=client_id, client_secret=client_secret)
             service = build('drive', 'v3', credentials=user_creds)

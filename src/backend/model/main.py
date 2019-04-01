@@ -19,7 +19,7 @@ epoch_early_stop = 6
 def train(model, data_loader):
     epoch = 1
     best_error_rate = float('inf')
-    while epoch < 40:
+    while epoch < 30:
         print('Epoch: {}'.format(epoch))
         data_loader.randomise_training_set()
         while data_loader.has_next():

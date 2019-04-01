@@ -7,6 +7,5 @@ backend/tmp-images
 backend/__pycache__
 backend/model/data/
 backend/model/logs/
-backend/model/snapshot/
 backend/model/__pycache__
 backend/model/venv/

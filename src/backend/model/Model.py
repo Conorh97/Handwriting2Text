@@ -33,7 +33,7 @@ class Model:
         self.update_ops = tf.get_collection(tf.GraphKeys.UPDATE_OPS)
 
         with tf.control_dependencies(self.update_ops):
-            self.optimizer = tf.train.AdamOptimizer(self.rate).minimize(self.loss)
+            self.optimizer = tf.train.RMSPropOptimizer(self.rate).minimize(self.loss)
 
         config = tf.ConfigProto(allow_soft_placement = True)
         self.sess = tf.Session(config=config)
