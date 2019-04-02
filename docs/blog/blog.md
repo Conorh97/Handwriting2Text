@@ -83,3 +83,27 @@ Unfortunately, these changes only helped me achieve an accuracy of 68%, which is
 -  Apply transfer learning to my neural network model. This is the reuse of publicly available models to train networks with comparatively small data. It involves importing the model, and redesigning the top 1 or 2 layers to fit my needs. This is the option I am leaning towards, as it can result in accuracies in the high nineties.
 
 I plan to carry out more research into what solution is best, and hopefully my model will be of significantly better quality soon.
+
+## Blog 10: A Working Prototype
+
+#### 02/04/19
+
+Its been a while since my last update. Over the past few weeks I've been experimenting with the different methods mentioned in my last blog. My current model now predicts individual words of text rather than complete lines of text. Just this morning, I validated its accuracy on a test set:
+
+![](images/accuracy.png)
+
+Roughly 74% is a significant improvement for my prediction model. I connected the component to my Flask API, which completes my first working application from user input to neural network prediction. I plan to apply further augmentation techniques to my dataset to try and achieve an even higher accuracy score.
+
+Due to the change in my model implementation, I had to alter my image preprocessing of user images to further segment the lines of text into individual words. The results were positive in most cases:
+
+![](images/correct_1.jpg)
+
+![](images/correct_2.jpg)
+
+However, I am currently having some issues with the new functionality. Some words are being cut off, as well as failure to segment different word grams into different images.
+
+![](images/incorrect_1.jpg)
+
+![](images/incorrect_2.jpg)
+
+My main focus for the next week will be to refine my implementation to resolve these issues. I have increased the number of tests in place for my project over the last few days as well as making a start on my documentation, so I will continue this progress to stay on track for the deadline.
