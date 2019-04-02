@@ -19,12 +19,6 @@ image_height = 32
 batch_size = 1
 max_text_length = 32
 
-SCOPES = ['https://www.googleapis.com/auth/documents']
-DOWNLOAD_DIRECTORY = '{}/tmp-images'.format(os.getcwd())
-app = Flask(__name__, static_url_path='')
-app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://admin:p4ssw0rd@localhost/H2TXT'
-db = SQLAlchemy(app)
-
 with open('credentials.json') as f:
     creds = json.load(f)
 
@@ -35,6 +29,12 @@ token_uri = creds['web']['token_uri']
 with open(character_list_path, "r+") as f:
     character_list = sorted(list(f.read()))
 model = Model(image_width, image_height, batch_size, character_list, max_text_length, False, True)
+
+SCOPES = ['https://www.googleapis.com/auth/documents']
+DOWNLOAD_DIRECTORY = '{}/tmp-images'.format(os.getcwd())
+app = Flask(__name__, static_url_path='')
+app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://admin:p4ssw0rd@localhost/H2TXT'
+db = SQLAlchemy(app)
 
 
 class User(db.Model):
@@ -136,13 +136,16 @@ def upload():
             for i in range(len(predicted)):
                 print(predicted[i])
                 corrected = spell.correction(predicted[i])
-                print(corrected)
-                if predicted[i][-1] in string.punctuation:
+                if predicted[i][-1] in string.punctuation and len(predicted[i]) > 1:
                     corrected += predicted[i][-1]
                 if predicted[i][0].isupper():
                     corrected = corrected.replace(corrected[0], corrected[0].upper())
                 result += corrected
                 result += " "
+                print(corrected)
+
+        for filename in os.listdir(DOWNLOAD_DIRECTORY):
+            os.remove('{}/{}'.format(DOWNLOAD_DIRECTORY, filename))
 
         return json.dumps({'status': '201', 'val': result})
     else:

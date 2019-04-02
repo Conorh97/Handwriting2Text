@@ -180,6 +180,7 @@ section {
   color: dimgray;
   font-size: 30px;
   padding: 10px;
+  cursor: pointer;
 }
 
 .drop-box {
@@ -227,7 +228,7 @@ section {
 }
 
 textarea {
-  height: 250px;
+  height: 290px;
   width: 200px;
   overflow-y: scroll;
   resize: none;
@@ -290,6 +291,7 @@ textarea {
   font-size: 19px;
   padding: 10px;
   border-radius: 50%;
+  cursor: pointer;
 }
 
 .share-btn i:hover {
@@ -347,6 +349,7 @@ textarea {
   font-size: 20px;
   color: #1a53ff;
   background-color: white;
+  cursor: pointer;
 }
 
 .permission-button:checked + label {
@@ -375,6 +378,7 @@ textarea {
   border-radius: 50%;
   color: white;
   background-color: #1a53ff;
+  cursor: pointer;
 }
 
 .next-slide {
@@ -386,6 +390,7 @@ textarea {
   border-radius: 50%;
   color: white;
   background-color: #1a53ff;
+  cursor: pointer;
 }
 
 .instructions {
