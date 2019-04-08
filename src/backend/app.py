@@ -1,5 +1,4 @@
-from flask import Flask, request
-from flask_sqlalchemy import SQLAlchemy
+from flask import Flask, request, Blueprint
 from flask_cors import CORS, cross_origin
 from werkzeug import secure_filename
 from image import process_image
@@ -8,6 +7,7 @@ from google.oauth2.credentials import Credentials
 from model.Model import Model
 from model.Loader import Loader
 from spellchecker import SpellChecker
+from db import db, User, CreatedDocument
 import os
 import json
 import string
@@ -34,48 +34,12 @@ SCOPES = ['https://www.googleapis.com/auth/documents']
 DOWNLOAD_DIRECTORY = '{}/tmp-images'.format(os.getcwd())
 app = Flask(__name__, static_url_path='')
 app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://admin:p4ssw0rd@localhost/H2TXT'
-db = SQLAlchemy(app)
+app_blueprint = Blueprint('app_blueprint', __name__)
 
-
-class User(db.Model):
-    id = db.Column(db.String(32), primary_key=True, unique=True)
-    forename = db.Column(db.String(32), nullable=False)
-    surname = db.Column(db.String(32), nullable=False)
-    email = db.Column(db.String(64), nullable=False)
-    image_url = db.Column(db.String(256), nullable=False)
-    access_token = db.Column(db.String(256), nullable=False)
-
-    def __init__(self, id, forename, surname, email, image_url, access_token):
-        self.id = id
-        self.forename = forename
-        self.surname = surname
-        self.email = email
-        self.image_url = image_url
-        self.access_token = access_token
-
-
-class CreatedDocument(db.Model):
-    id = db.Column(db.String(64), primary_key=True, unique=True)
-    uid = db.Column(db.String(32), db.ForeignKey('user.id'), nullable=False)
-    title = db.Column(db.String(64), nullable=False)
-    created_on = db.Column(db.DateTime, default=db.func.now())
-
-    def __init__(self, id, uid, title):
-        self.id = id
-        self.uid = uid
-        self.title = title
-
-    def as_dict(self):
-        return {
-            'id': self.id,
-            'uid': self.uid,
-            'title': self.title,
-            'created_on': self.created_on.__str__()
-        }
-
-
-db.create_all()
-db.session.commit()
+with app.app_context():
+    db.init_app(app)
+    db.create_all()
+    db.session.commit()
 
 
 def callback(request_id, response, exception):
@@ -85,10 +49,11 @@ def callback(request_id, response, exception):
         print("Permission Id: %s" % response.get('id'))
 
 
+@app_blueprint.route('/create_user', methods=['POST'])
 @app.route('/create_user', methods=['POST'])
 @cross_origin()
 def create_user():
-    if request.form is not None:
+    if request.form is not None or len(request.form) == 0:
         id = str(request.form['id'])
         user = User.query.filter_by(id=id).first()
         if user is not None:
@@ -113,6 +78,7 @@ def create_user():
         return json.dumps({'status': '500', 'val': 'Error'})
 
 
+@app_blueprint.route('/upload', methods=['POST'])
 @app.route('/upload', methods=['POST'])
 @cross_origin()
 def upload():
@@ -152,6 +118,7 @@ def upload():
         return json.dumps({'status': '500', 'val': 'Error'})
 
 
+@app_blueprint.route('/create', methods=['POST'])
 @app.route('/create', methods=['POST'])
 @cross_origin()
 def create():
@@ -192,6 +159,7 @@ def create():
         return json.dumps({'status': '500', 'val': 'Error'})
 
 
+@app_blueprint.route('/documents/<string:user_id>', methods=['GET'])
 @app.route('/documents/<string:user_id>', methods=['GET'])
 @cross_origin()
 def documents(user_id):
@@ -221,10 +189,12 @@ def documents(user_id):
         return json.dumps({'status': '500', 'val': 'Error'})
 
 
+@app_blueprint.route('/share_document', methods=['POST'])
 @app.route('/share_document', methods=['POST'])
 @cross_origin()
 def share_document():
     if request.form is not None:
+        print(request.form)
         id = str(request.form['id'])
         uid = str(request.form['uid'])
         emails = [request.form['emails[{}]'.format(i)] for i in range(len(request.form) - 3)]
