@@ -47,5 +47,6 @@ module('Integration | Component | tutorial-modal', function(hooks) {
     assert.equal($('.instructions ul li:first-child').text().trim(),
       'First, click the blue box indicated in the image above.');
 
+    await click('.close-button');
   });
 });

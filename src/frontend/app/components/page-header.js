@@ -10,7 +10,7 @@ export default Component.extend({
   actions: {
     invalidateSession: function() {
       let cookieService = this.get('cookies');
-      cookieService.clear('user');
+      cookieService.clear('currentUser');
 
       this.get('session').invalidate();
       this.get('router').transitionTo('login');

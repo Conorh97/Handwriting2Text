@@ -7,6 +7,7 @@ module.exports = function(environment) {
     rootURL: '/',
     locationType: 'auto',
     apiHost: 'http://localhost:4200',
+    apiKey: 'AIzaSyBSPyjcMT_FQwTm0EqMeVbjfmQCkg7oseg',
     googleClientID: '740582772473-nqoah085s7pidddh9tfjjkbo4go3r1u7.apps.googleusercontent.com',
     EmberENV: {
       FEATURES: {

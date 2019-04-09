@@ -11,15 +11,11 @@ export default Route.extend(AuthenticatedRouteMixin, {
     let userId = cookieInfo[3];
     this.get('ajax').request(`http://localhost:5000/documents/${userId}`, {
       method: 'GET',
-      async: false,
       success: (userInfo) => {
         if (userInfo.val.length > 0) {
           console.log(userInfo.val);
           controller.set('documents', userInfo.val);
         }
-      },
-      error: (e) => {
-        console.log(e);
       }
     });
   }
