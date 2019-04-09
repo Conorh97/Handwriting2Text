@@ -41,9 +41,6 @@ export default Component.extend({
             this.toggleLoading();
             this.hideShareDocument();
             console.log(result);
-          },
-          error: (e) => {
-            console.log(e);
           }
         });
       }

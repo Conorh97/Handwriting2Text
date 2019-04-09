@@ -5,6 +5,7 @@
     <h5>Please enter the email address(es) of the people you would like to share this document with.</h5>
     {{#power-select-multiple
       selected=selected
+      id="email-input"
       onchange=(action (mut selected))
       onkeydown=(action "createOnEnter")
       as |number|}}
@@ -20,7 +21,7 @@
       <input type="radio" class="permission-button" id="pButton3"
              checked={{eq permission "reader"}} onclick={{action (mut permission) "reader"}}/>
       <label for="pButton3">Reader</label>
-      <button class="sign-in-btn" class="btn btn-primary" onclick={{action "shareDocument"}}>
+      <button class="sign-in-btn btn btn-primary" onclick={{action "shareDocument"}}>
         <i class="fa fa-google" style="font-size:25px;margin-top:2px;color:white"></i>
         <span class="button-text" style="font-size:20px;">Share with Google</span>
       </button>

@@ -17,7 +17,6 @@ export default Route.extend(OAuth2ImplicitGrantCallbackRouteMixin, {
         this.createCookie(userInfo, access_token);
         console.log(userInfo);
         later(() => {
-          console.log('Go Home');
           this.transitionTo('home');
         }, 1000);
       }

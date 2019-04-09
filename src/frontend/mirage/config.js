@@ -24,6 +24,12 @@ export default function() {
 
   this.post('/create_user', {status: 'User Created'});
 
+  this.post('/create', {status: 'Document created successfully.'});
+
+  this.post('/share_document', {status: 'Document shared successfully.'});
+
+  this.post('/upload', {val: 'Sample result text.'});
+
   this.get(`https://www.googleapis.com/plus/v1/people/me`, () => {
     console.log('Hit');
     return {

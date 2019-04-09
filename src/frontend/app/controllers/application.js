@@ -9,7 +9,7 @@ export default Controller.extend({
     this._super(controller, model);
 
     let cookieService = this.get('cookies');
-    let cookie = cookieService.read().currentUser;
+    let cookie = cookieService.read('currentUser');
 
     if (cookie) {
       let values = cookie.split(',');

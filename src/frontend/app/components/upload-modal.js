@@ -29,7 +29,6 @@ export default Component.extend({
           contentType: false,
           dataType: 'json',
           success: (response) => {
-            console.log(response.val);
             this.toggleLoading();
             this.hideUpload();
             this.displayResult(response.val);

@@ -41,9 +41,6 @@ export default Component.extend(FileSaverMixin, {
             dataType: 'json',
             success: (response) => {
               this.toggleLoading();
-            },
-            error: (e) => {
-              console.log(e);
             }
           })
         }

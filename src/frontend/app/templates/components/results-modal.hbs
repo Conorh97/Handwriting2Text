@@ -8,16 +8,16 @@
     <div id="save-box">
       <div class="form-group filename">
         <label>Filename:</label>
-        {{input class="form-control" value=filename type="text"}}
+        {{input class="form-control new-file-name" value=filename type="text"}}
       </div>
       {{#if this.noName}}
         <p class="error-message">Please enter a filename above.</p>
       {{/if}}
-      <button id="sign-in-btn" class="btn btn-primary" onClick={{action "createGoogleDoc"}}>
+      <button id="sign-in-btn" class="btn btn-primary save-doc-btn" onClick={{action "createGoogleDoc"}}>
         <i class="fa fa-google" style="color:white"></i>
         <span class="button-text">Save to Google Drive</span>
       </button>
-      <button id="sign-in-btn" class="btn btn-success" onClick={{action "downloadFile"}}>
+      <button id="sign-in-btn" class="btn btn-success download-btn" onClick={{action "downloadFile"}}>
         <i class="fa fa-download"></i>
         <span class="button-text">  Download Local File  </span>
       </button>
