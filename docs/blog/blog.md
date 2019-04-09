@@ -107,3 +107,13 @@ However, I am currently having some issues with the new functionality. Some word
 ![](images/incorrect_2.jpg)
 
 My main focus for the next week will be to refine my implementation to resolve these issues. I have increased the number of tests in place for my project over the last few days as well as making a start on my documentation, so I will continue this progress to stay on track for the deadline.
+
+## Blog 11: Test Coverage
+
+#### 09/04/19
+
+Coming into the final few weeks of the semester, achieving a high test coverage has been one of my main priorities. On my web application, I have implemented numerous unit, integration and acceptance. The idea of multiple testing approaches is to ensure all different elements of the application have been validated. Below is a screenshot of the current statistics regarding my EmberJS tests:
+
+![](images/coverage.png)
+
+While my current coverage of 90.58% is very comprehensive, I still aim to achieve as high a figure as possible. I have also been implementing unit and integration tests on my Flask server. This is done by mocking both the MySQL database and the incoming requests to the endpoints. Checking that my project are as robust as possible will ensure a strong presentation on demo day. 
