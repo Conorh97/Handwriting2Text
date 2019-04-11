@@ -2,8 +2,17 @@ from flask import Flask
 from flask_testing import TestCase
 from app import app_blueprint
 from db import db, User, CreatedDocument
+from unittest.mock import patch
 import unittest
 import json
+
+
+def mock_google_create(a, b, c):
+    return "87654321"
+
+
+def mock_google_share(a, b, c, d):
+    return True
 
 
 class DBTests(TestCase):
@@ -99,6 +108,42 @@ class DBTests(TestCase):
         response = self.client.post('/create_user', data=data).data
         response_data = json.loads(response)
         assert response_data['val'] == 'Access token updated.'
+
+    @patch('app.share_doc', side_effect=mock_google_share)
+    def test_share_document(self, mock_share):
+        data = {
+            'id': 26,
+            'uid': 1,
+            'emails[0]': 'david.weir3@mail.dcu.ie',
+            'permission': 'reader'
+        }
+        response = self.client.post('/share_document', data=data).data
+        response_data = json.loads(response)
+        assert response_data['val'] == 'Document shared successfully.'
+
+    @patch('app.create_doc', side_effect=mock_google_create)
+    def test_create(self, mock_create):
+        data = {
+            'filename': 'TestFile5',
+            'content': 'A document for my integration tests.',
+            'accessToken': 'MockToken1'
+        }
+        response = self.client.post('/create', data=data).data
+        print(response)
+        response_data = json.loads(response)
+        assert response_data['val'] == 'Google Doc Created'
+
+    @patch('app.create_doc', side_effect=mock_google_create)
+    def test_create_expired(self, mock_create):
+        data = {
+            'filename': 'Test File 11',
+            'content': 'A document for my integration tests.',
+            'accessToken': 'FakeToken1111111'
+        }
+        response = self.client.post('/create', data=data).data
+        print(response)
+        response_data = json.loads(response)
+        assert response_data['val'] == 'Access token expired.'
 
 
 if __name__ == "__main__":

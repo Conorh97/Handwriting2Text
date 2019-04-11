@@ -69,6 +69,7 @@ def upload():
     if request.files is not None:
         result = ""
 
+        print(len(request.files))
         for i in range(len(request.files)):
             file = request.files['image[{}]'.format(i)]
             filename = secure_filename(file.filename)
@@ -76,25 +77,25 @@ def upload():
             process_image(filename)
             os.remove('{}/{}'.format(DOWNLOAD_DIRECTORY, filename))
 
-        data_loader = Loader(data_path, batch_size, (image_width, image_height), max_text_length, True)
-        #spell = SpellChecker()
+            data_loader = Loader(data_path, batch_size, (image_width, image_height), max_text_length, True)
+            spell = SpellChecker()
 
-        while data_loader.has_next():
-            batch = data_loader.get_next()
-            predicted = model.infer_single_batch(batch)
+            while data_loader.has_next():
+                batch = data_loader.get_next()
+                predicted = model.infer_single_batch(batch)
 
-            for i in range(len(predicted)):
-                print(predicted[i])
-                #corrected = spell.correction(predicted[i])
-                #if predicted[i][-1] in string.punctuation and len(predicted[i]) > 1:
-                #    corrected += predicted[i][-1]
-                #if predicted[i][0].isupper():
-                #    corrected = corrected.replace(corrected[0], corrected[0].upper())
-                result += predicted[i]
-                result += " "
+                for i in range(len(predicted)):
+                    print(predicted[i])
+                    corrected = spell.correction(predicted[i])
+                    if predicted[i][-1] in string.punctuation and len(predicted[i]) > 1:
+                        corrected += predicted[i][-1]
+                    if predicted[i][0].isupper():
+                        corrected = corrected.replace(corrected[0], corrected[0].upper())
+                    result += corrected
+                    result += " "
 
-        for filename in os.listdir(DOWNLOAD_DIRECTORY):
-            os.remove('{}/{}'.format(DOWNLOAD_DIRECTORY, filename))
+            for filename in os.listdir(DOWNLOAD_DIRECTORY):
+                os.remove('{}/{}'.format(DOWNLOAD_DIRECTORY, filename))
 
         return json.dumps({'status': '201', 'val': result})
     else:

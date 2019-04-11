@@ -14,7 +14,7 @@ export default Component.extend({
       let files = e.target.files;
       for (let i = 0; i < files.length; i++) {
         this.fd.append(`image[${this.imageCount}]`, files[i]);
-        this.imageCount++;
+        this.set('imageCount', this.imageCount + 1);
       }
       this.set('hasImages', true);
     },

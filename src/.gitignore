@@ -1,9 +1,9 @@
 *.idea/
 */venv/
-backend/config.cfg
 backend/credentials.json
 backend/quickstart.py
 backend/tmp-images
+backend/htmlcov/
 backend/__pycache__
 backend/model/data/
 backend/model/logs/
