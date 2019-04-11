@@ -2,12 +2,11 @@ from flask import Flask, request, Blueprint
 from flask_cors import CORS, cross_origin
 from werkzeug import secure_filename
 from image import process_image
-from googleapiclient.discovery import build
-from google.oauth2.credentials import Credentials
 from model.Model import Model
 from model.Loader import Loader
 from spellchecker import SpellChecker
 from db import db, User, CreatedDocument
+from google_requests import create_doc, get_docs, share_doc
 import os
 import json
 import string
@@ -19,18 +18,10 @@ image_height = 32
 batch_size = 1
 max_text_length = 32
 
-with open('credentials.json') as f:
-    creds = json.load(f)
-
-client_id = creds['web']['client_id']
-client_secret = creds['web']['client_secret']
-token_uri = creds['web']['token_uri']
-
 with open(character_list_path, "r+") as f:
     character_list = sorted(list(f.read()))
 model = Model(image_width, image_height, batch_size, character_list, max_text_length, False, True)
 
-SCOPES = ['https://www.googleapis.com/auth/documents']
 DOWNLOAD_DIRECTORY = '{}/tmp-images'.format(os.getcwd())
 app = Flask(__name__, static_url_path='')
 app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://admin:p4ssw0rd@localhost/H2TXT'
@@ -40,13 +31,6 @@ with app.app_context():
     db.init_app(app)
     db.create_all()
     db.session.commit()
-
-
-def callback(request_id, response, exception):
-    if exception:
-        print(exception)
-    else:
-        print("Permission Id: %s" % response.get('id'))
 
 
 @app_blueprint.route('/create_user', methods=['POST'])
@@ -93,7 +77,7 @@ def upload():
             os.remove('{}/{}'.format(DOWNLOAD_DIRECTORY, filename))
 
         data_loader = Loader(data_path, batch_size, (image_width, image_height), max_text_length, True)
-        spell = SpellChecker()
+        #spell = SpellChecker()
 
         while data_loader.has_next():
             batch = data_loader.get_next()
@@ -101,14 +85,13 @@ def upload():
 
             for i in range(len(predicted)):
                 print(predicted[i])
-                corrected = spell.correction(predicted[i])
-                if predicted[i][-1] in string.punctuation and len(predicted[i]) > 1:
-                    corrected += predicted[i][-1]
-                if predicted[i][0].isupper():
-                    corrected = corrected.replace(corrected[0], corrected[0].upper())
-                result += corrected
+                #corrected = spell.correction(predicted[i])
+                #if predicted[i][-1] in string.punctuation and len(predicted[i]) > 1:
+                #    corrected += predicted[i][-1]
+                #if predicted[i][0].isupper():
+                #    corrected = corrected.replace(corrected[0], corrected[0].upper())
+                result += predicted[i]
                 result += " "
-                print(corrected)
 
         for filename in os.listdir(DOWNLOAD_DIRECTORY):
             os.remove('{}/{}'.format(DOWNLOAD_DIRECTORY, filename))
@@ -128,26 +111,8 @@ def create():
         access_token = str(request.form['accessToken'])
 
         user = User.query.filter_by(access_token=access_token).first()
-
         if user is not None:
-            user_creds = Credentials(token=access_token, token_uri=token_uri,
-                                     client_id=client_id, client_secret=client_secret)
-            service = build('docs', 'v1', credentials=user_creds)
-
-            requests = [
-                {
-                    'insertText': {
-                        'location': {
-                            'index': 1,
-                        },
-                        'text': content
-                    }
-                }
-            ]
-
-            doc = service.documents().create(body={'title': filename}).execute()
-            document_id = doc['documentId']
-            insert_text = service.documents().batchUpdate(documentId=document_id, body={'requests': requests}).execute()
+            document_id = create_doc(access_token, content, filename)
 
             document = CreatedDocument(document_id, user.id, filename)
             db.session.add(document)
@@ -166,11 +131,7 @@ def documents(user_id):
     if user_id is not None:
         user = User.query.filter_by(id=user_id).first()
         if user is not None:
-            user_creds = Credentials(token=user.access_token, token_uri=token_uri,
-                                     client_id=client_id, client_secret=client_secret)
-            service = build('drive', 'v3', credentials=user_creds)
-
-            drive_files = service.files().list().execute()
+            drive_files = get_docs(user.access_token)
             drive_ids = [file['id'] for file in drive_files['files']]
             user_documents = CreatedDocument.query.filter_by(uid=user_id).all()
 
@@ -194,7 +155,6 @@ def documents(user_id):
 @cross_origin()
 def share_document():
     if request.form is not None:
-        print(request.form)
         id = str(request.form['id'])
         uid = str(request.form['uid'])
         emails = [request.form['emails[{}]'.format(i)] for i in range(len(request.form) - 3)]
@@ -202,24 +162,7 @@ def share_document():
 
         user = User.query.filter_by(id=uid).first()
         if user is not None:
-            user_creds = Credentials(token=user.access_token, token_uri=token_uri,
-                                     client_id=client_id, client_secret=client_secret)
-            service = build('drive', 'v3', credentials=user_creds)
-            batch = service.new_batch_http_request(callback=callback)
-
-            for email in emails:
-                user_permission = {
-                    'type': 'user',
-                    'role': permission,
-                    'emailAddress': email
-                }
-                batch.add(service.permissions().create(
-                    fileId=id,
-                    body=user_permission,
-                    fields='id'
-                ))
-
-            batch.execute()
+            share_doc(user.access_token, emails, permission, id)
             return json.dumps({'status': '201', 'val': 'Document shared successfully.'})
         else:
             return json.dumps({'status': '500', 'val': 'Error fetching access token.'})
