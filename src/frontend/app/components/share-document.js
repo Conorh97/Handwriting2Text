@@ -6,6 +6,8 @@ export default Component.extend({
   ajax: inject(),
   cookies: inject(),
   selected: [],
+  noEmails: false,
+  noPermission: false,
   permission: null,
   actions: {
     createOnEnter: function(select, e) {
@@ -43,6 +45,12 @@ export default Component.extend({
             console.log(result);
           }
         });
+      }
+      if (this.selected.length == 0) {
+        this.set('noEmails', true);
+      }
+      if (this.permission == null) {
+        this.set('noPermission', true);
       }
     }
   }
