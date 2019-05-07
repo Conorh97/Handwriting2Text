@@ -85,8 +85,8 @@ def upload():
                 predicted = model.infer_single_batch(batch)
 
                 for i in range(len(predicted)):
-                    print(predicted[i])
                     corrected = spell.correction(predicted[i])
+                    print(corrected)
                     if predicted[i][-1] in string.punctuation and len(predicted[i]) > 1:
                         corrected += predicted[i][-1]
                     if predicted[i][0].isupper():

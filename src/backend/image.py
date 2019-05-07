@@ -23,7 +23,7 @@ def remove_shadow(image):
 
 
 def process_image(filename):
-    image = cv2.imread('{}/{}'.format(os.getcwd(), filename))
+    image = cv2.imread('{}/{}'.format(DOWNLOAD_DIRECTORY, filename))
     image = cv2.resize(image, None, fx=0.5, fy=0.5)
     image = remove_shadow(image)
 
