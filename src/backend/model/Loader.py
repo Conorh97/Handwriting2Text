@@ -111,12 +111,18 @@ class Loader(object):
         images = []
         for i in batch_range:
             preprocessed_image = self.preprocess(self.samples[i].file_path)
-            images.append(preprocessed_image)
+            if preprocessed_image is not None:
+                images.append(preprocessed_image)
         self.current_index += self.batch_size
-        return Batch(gt_texts, images)
+        if len(images) == 0:
+            return
+        else:
+            return Batch(gt_texts, images)
 
     def preprocess(self, file_path):
         image = cv2.imread(file_path, cv2.IMREAD_GRAYSCALE)
+        if image is None:
+            return
 
         width = self.image_size[0]
         height = self.image_size[1]

@@ -82,6 +82,8 @@ def upload():
 
             while data_loader.has_next():
                 batch = data_loader.get_next()
+                if batch is None:
+                    continue
                 predicted = model.infer_single_batch(batch)
 
                 for i in range(len(predicted)):

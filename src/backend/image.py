@@ -34,7 +34,7 @@ def process_image(filename):
 
     components = cv2.findContours(dilated, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)[0]
     j = 0
-    for component in sorted(components, key=lambda c: (round_down(c.tolist()[0][0][1], 40), c.tolist()[0][0][0])):
+    for component in sorted(components, key=lambda c: (round_down(c.tolist()[0][0][1], 20), c.tolist()[0][0][0])):
         if cv2.contourArea(component) < 300:
             continue
 
