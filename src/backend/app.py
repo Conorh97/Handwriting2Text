@@ -24,7 +24,7 @@ model = Model(image_width, image_height, batch_size, character_list, max_text_le
 
 DOWNLOAD_DIRECTORY = '{}/tmp-images'.format(os.getcwd())
 app = Flask(__name__, static_url_path='')
-app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://admin:p4ssw0rd@localhost/H2TXT'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://admin:p4ssw0rd@db:32000/H2TXT'
 app_blueprint = Blueprint('app_blueprint', __name__)
 
 with app.app_context():
@@ -69,7 +69,6 @@ def upload():
     if request.files is not None:
         result = ""
 
-        print(len(request.files))
         for i in range(len(request.files)):
             file = request.files['image[{}]'.format(i)]
             filename = secure_filename(file.filename)

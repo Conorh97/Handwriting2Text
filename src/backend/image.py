@@ -39,6 +39,6 @@ def process_image(filename):
             continue
 
         (x, y, w, h) = cv2.boundingRect(component)
-        word = image[y - 5 :y + h + 5, x - 5:x + w + 5]
+        word = image[y - 5:y + h + 5, x - 5:x + w + 5]
         cv2.imwrite('{}/{}-{}'.format(DOWNLOAD_DIRECTORY, j, filename), word)
         j += 1

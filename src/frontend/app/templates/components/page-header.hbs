@@ -4,8 +4,7 @@
   </div>
   <div id="user-information">
     {{#if session.isAuthenticated}}
-      <h3>{{user.forename}}</h3>
-      <img id="profile-picture" alt="User Profile Picture" src={{user.imageUrl}}>
+      <h3 style="margin-left: 60px">{{user.forename}}</h3>
       <button class="sign-out-btn btn btn-outline-primary" onclick={{action "invalidateSession"}}>
         <i class="fa fa-google"></i>
         <span class="button-text">Logout</span>

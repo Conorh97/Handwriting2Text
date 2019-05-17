@@ -8,3 +8,4 @@ docker run -d -it --network host --name h2txt_frontend ember
 cd backend
 sudo pip3 install -r req.txt
 bash run.sh
+
