@@ -1,1 +1,14 @@
 Flask==1.0.2
+Flask-SQLAlchemy
+mysqlclient
+numpy
+tensorflow
+flask_cors
+pytest
+pyspellchecker
+google-api-python-client
+werkzeug
+opencv-python
+oauth2client
+argparse
+editdistance
