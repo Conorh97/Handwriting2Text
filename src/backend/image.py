@@ -29,12 +29,12 @@ def process_image(filename):
 
     gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
     th, threshed = cv2.threshold(gray, 150, 255, cv2.THRESH_BINARY_INV)
-    kernel = cv2.getStructuringElement(cv2.MORPH_CROSS, (6, 3))
-    dilated = cv2.dilate(threshed, kernel, iterations=2)
+    kernel = cv2.getStructuringElement(cv2.MORPH_CROSS, (6, 5))
+    dilated = cv2.dilate(threshed, kernel, iterations=8)
 
     components = cv2.findContours(dilated, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)[0]
     j = 0
-    for component in sorted(components, key=lambda c: (round_down(c.tolist()[0][0][1], 20), c.tolist()[0][0][0])):
+    for component in sorted(components, key=lambda c: (round_down(c.tolist()[0][0][1], 35), c.tolist()[0][0][0])):
         if cv2.contourArea(component) < 300:
             continue
 
