@@ -116,4 +116,16 @@ Coming into the final few weeks of the semester, achieving a high test coverage 
 
 ![](images/coverage.png)
 
-While my current coverage of 90.58% is very comprehensive, I still aim to achieve as high a figure as possible. I have also been implementing unit and integration tests on my Flask server. This is done by mocking both the MySQL database and the incoming requests to the endpoints. Checking that my project are as robust as possible will ensure a strong presentation on demo day. 
+While my current coverage of 90.58% is very comprehensive, I still aim to achieve as high a figure as possible. I have also been implementing unit and integration tests on my Flask server. This is done by mocking both the MySQL database and the incoming requests to the endpoints. Checking that my project are as robust as possible will ensure a strong presentation on demo day.
+
+## Blog 12: Deadline Day
+
+#### 19/05/19
+
+Its been a hectic month, between finishing off the project itself, module assignments and studying for my final exams. Its the morning of the deadline, and I have managed to complete all components of the project. I'll give you a quick recap of what I've achieved in the last few weeks.
+
+Firstly, I have trained the model to an accuracy of approximately 86%. It is performing at a high standard, along with the refined image processing functionality for parsing the input images. I'm delighted with the current state of the application, as I feel it reflects the amount of effort applied over the last few months.
+
+Once I was satisfied with the app, I began to carry out my user testing with volunteers from the course as well as friends from other colleges. This involved walking through each use case I had previously designed, as well as filling out a short survey after completion. The feedback overall was positive, and it also opened my eyes to a few issues with the interface and features which could be added in the future. My testing manual goes into the user testing process in further detail. It can be found in the *docs* section of my repository, along with my technical manual and user manual.
+
+Overall, the project has been a very testing experience. I have had to learn new technologies and overcome issues I've never experienced before. It is also the first project of this size I've been tasked with individually, so I had to set myself strict milestones to ensure I didn't fall behind schedule. I'm satisfied with the end results, and I feel that the whole experience has helped me grow as a developer. The final task is the project demo on Wednesday May 22nd. The next few days will be spent preparing to make sure I can show off my application as well as I can!
